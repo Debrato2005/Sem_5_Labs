@@ -1,0 +1,146 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;Write an assembly language program to define 
+    2 00000000         ;an array of 2 16 bit numbers in the code memory 
+    3 00000000         ;and copy this array to the data memory
+    4 00000000                 AREA             RESET,DATA, READONLY
+    5 00000000                 EXPORT           __Vectors
+    6 00000000         
+    7 00000000         __Vectors
+    8 00000000 10001000        DCD              0X10001000  ;stack pointer valu
+                                                            e when stack is emo
+                                                            ty
+    9 00000004 00000000        DCD              Reset_Handler ; reset vector
+   10 00000008         
+   11 00000008                 ALIGN
+   12 00000008         
+   13 00000008                 AREA             mycode, CODE , READONLY
+   14 00000000                 ENTRY
+   15 00000000                 EXPORT           Reset_Handler ;till here common
+                                                            
+   16 00000000         Reset_Handler
+   17 00000000 4806            LDR              R0,=SRC
+   18 00000002 8801            LDRH             R1,[R0]     ;R0=0XFF12
+   19 00000004         
+   20 00000004 4A06            LDR              R2,=DST
+   21 00000006 8011            STRH             R1,[R2]
+   22 00000008         
+   23 00000008 F100 0002       ADD              R0,#2
+   24 0000000C F102 0202       ADD              R2,#2
+   25 00000010 8803            LDRH             R3,[R0]
+   26 00000012 8013            STRH             R3,[R2]
+   27 00000014         
+   28 00000014         
+   29 00000014         stop
+   30 00000014 E7FE            b                stop
+   31 00000016 12 FF 02 
+              B5       SRC     DCW              0xFF12,0XB502 ;3RD PARAMETER Ea
+                                                            ch value occupies 3
+                                                            2 bits (4 bytes).
+   32 0000001A         ;SRC IS JUST label
+   33 0000001A         ;An array in ARM assembly is not a special language cons
+                       truct like in C. 
+   34 0000001A         ;It is simply multiple consecutive memory locations.
+   35 0000001A         
+   36 0000001A 00 00 00000000 
+              00000000         AREA             mydata , DATA, READWRITE
+   37 00000000 00 00 00 
+              00       DST     DCW              0,0
+   38 00000004         ;3RD PARAMETER IS THE DATA BUT, NO USE BCZ RAM ON START 
+                       ALWAYS INITIALIZES TO 0 THEREFORE 0 IN MEMORY
+   39 00000004         ;CAN INITIALISE RAM WHEN DEBUGGING IN MEMORY WINDOW
+   40 00000004                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=prog2.d 
+-oprog2.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\
+NXP\LPC17xx --predefine="__EVAL SETA 1" --list=prog2.lst prog2.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 4 in file prog2.asm
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 7 in file prog2.asm
+   Uses
+      At line 5 in file prog2.asm
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 16 in file prog2.asm
+   Uses
+      At line 9 in file prog2.asm
+      At line 15 in file prog2.asm
+
+SRC 00000016
+
+Symbol: SRC
+   Definitions
+      At line 31 in file prog2.asm
+   Uses
+      At line 17 in file prog2.asm
+Comment: SRC used once
+mycode 00000000
+
+Symbol: mycode
+   Definitions
+      At line 13 in file prog2.asm
+   Uses
+      None
+Comment: mycode unused
+stop 00000014
+
+Symbol: stop
+   Definitions
+      At line 29 in file prog2.asm
+   Uses
+      At line 30 in file prog2.asm
+Comment: stop used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DST 00000000
+
+Symbol: DST
+   Definitions
+      At line 37 in file prog2.asm
+   Uses
+      At line 20 in file prog2.asm
+Comment: DST used once
+mydata 00000000
+
+Symbol: mydata
+   Definitions
+      At line 36 in file prog2.asm
+   Uses
+      None
+Comment: mydata unused
+2 symbols
+341 symbols in table

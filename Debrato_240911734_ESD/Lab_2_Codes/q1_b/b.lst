@@ -1,0 +1,201 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;1.> Write an ARM assembly language program to transfer 
+                       block of ten 32 bit numbers
+    2 00000000         ;frobut where are we writing tjhm one memory to another
+    3 00000000         ;a. When the source and destination blocks are non-overl
+                       apping
+    4 00000000         ;b. When the source and destination blocks are overlappi
+                       ng
+    5 00000000         ;Hint: Use Register indirect addressing mode or indexed 
+                       addressing mode
+    6 00000000         
+    7 00000000         ; b.>
+    8 00000000                 AREA             RESET,DATA, READONLY
+    9 00000000                 EXPORT           __Vectors
+   10 00000000         
+   11 00000000         __Vectors
+   12 00000000 10001000        DCD              0X10001000  ;STACK POINTER
+   13 00000004 00000000        DCD              Reset_Handler ;RESET VECTOR
+   14 00000008         
+   15 00000008                 ALIGN
+   16 00000008                 AREA             MYCODE,CODE , READONLY
+   17 00000000                 ENTRY
+   18 00000000                 EXPORT           Reset_Handler
+   19 00000000         
+   20 00000000         Reset_Handler
+   21 00000000 4D05            LDR              R5,=SRC     ; JUST TO SEE SRC A
+                                                            DDRRESS WHILE USING
+                                                             MEME WINDOW
+   22 00000002         
+   23 00000002 4806            LDR              R0,=SRC+(N-1)*4 ; SOURCE POINTI
+                                                            NG TO ITS LAST ELEM
+                                                            ENT
+   24 00000004 4906            LDR              R1,=SRC +(N-1+S)*4 ; DESTINATIO
+                                                            N IS POINTING TO TH
+                                                            E LAST ELEMENTS
+   25 00000006 F04F 020A       MOV              R2,#10
+   26 0000000A         
+   27 0000000A F850 3904 
+                       L1      LDR              R3,[R0],#-4 ; - BCZ WE ARE PERF
+                                                            ORMING BACKWARD COP
+                                                            Y
+   28 0000000E F841 3904       STR              R3,[R1],#-4
+   29 00000012 3A01            SUBS             R2,#1
+   30 00000014 D1F9            BNE              L1
+   31 00000016         
+   32 00000016 E7FE    STOP    B                STOP
+   33 00000018 0000000A 
+                       N       EQU              10          ; NO OF ELEMENTS WE
+                                                             DECIDE ACC TO QN
+   34 00000018 00000003 
+                       S       EQU              3           ; SHIFT WE DECIDE A
+                                                            CC TO QN
+   35 00000018         
+   36 00000018 00000000 
+              00000024 
+              00000030         AREA             DATASEG, DATA, READWRITE
+   37 00000000         ;not reqd because we are overlapping the source memory B
+                       UT BCZ WRITING AS WELL SRC HERE
+   38 00000000 00000000 
+              12345678 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+              23562356 
+              65326532 
+              00000001 
+              00000010 
+              00000011 
+              09876543 
+              98765432 
+              89898989 SRC     DCD              0X00000000,0X12345678,0X2356235
+6,0X65326532, 0X00000001,0X00000010,0X00000011,0X09876543,0X98765432, 0X8989898
+9
+   39 00000028         ; DATA DOESNT MATTER IT WILL BECOME 0 NO USE OF INITIALI
+                       SE
+   40 00000028         
+   41 00000028                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=b.d -ob.
+o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NXP\LPC1
+7xx --predefine="__EVAL SETA 1" --list=b.lst b.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 8 in file b.asm
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 11 in file b.asm
+   Uses
+      At line 9 in file b.asm
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+L1 0000000A
+
+Symbol: L1
+   Definitions
+      At line 27 in file b.asm
+   Uses
+      At line 30 in file b.asm
+Comment: L1 used once
+MYCODE 00000000
+
+Symbol: MYCODE
+   Definitions
+      At line 16 in file b.asm
+   Uses
+      None
+Comment: MYCODE unused
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 20 in file b.asm
+   Uses
+      At line 13 in file b.asm
+      At line 18 in file b.asm
+
+STOP 00000016
+
+Symbol: STOP
+   Definitions
+      At line 32 in file b.asm
+   Uses
+      At line 32 in file b.asm
+Comment: STOP used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DATASEG 00000000
+
+Symbol: DATASEG
+   Definitions
+      At line 36 in file b.asm
+   Uses
+      None
+Comment: DATASEG unused
+SRC 00000000
+
+Symbol: SRC
+   Definitions
+      At line 38 in file b.asm
+   Uses
+      At line 21 in file b.asm
+      At line 23 in file b.asm
+      At line 24 in file b.asm
+
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+N 0000000A
+
+Symbol: N
+   Definitions
+      At line 33 in file b.asm
+   Uses
+      At line 23 in file b.asm
+      At line 24 in file b.asm
+
+S 00000003
+
+Symbol: S
+   Definitions
+      At line 34 in file b.asm
+   Uses
+      At line 24 in file b.asm
+Comment: S used once
+2 symbols
+343 symbols in table
