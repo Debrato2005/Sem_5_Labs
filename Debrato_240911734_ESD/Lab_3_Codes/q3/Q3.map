@@ -1,4 +1,4 @@
-ARM Linker, 5.03 [Build 24] [MDK-ARM Lite]
+Component: Arm Compiler for Embedded 6.24 Tool: armlink [5f371500]
 
 ==============================================================================
 
@@ -16,13 +16,13 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    RESET                                    0x00000000   Section        8  q3.o(RESET)
     Q3.ASM                                   0x00000000   Number         0  q3.o ABSOLUTE
+    RESET                                    0x00000000   Section        8  q3.o(RESET)
     MYCODE                                   0x00000008   Section      112  q3.o(MYCODE)
     SRC1                                     0x00000048   Data          16  q3.o(MYCODE)
     SRC2                                     0x00000058   Data          16  q3.o(MYCODE)
-    DATASEG                                  0x10000000   Section       17  q3.o(DATASEG)
     OUT                                      0x10000000   Data          16  q3.o(DATASEG)
+    DATASEG                                  0x10000000   Section       17  q3.o(DATASEG)
     BORROW                                   0x10000010   Data           1  q3.o(DATASEG)
 
     Global Symbols
@@ -43,22 +43,22 @@ Memory Map of the image
 
   Load Region LR_1 (Base: 0x00000000, Size: 0x0000008c, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Base: 0x00000000, Size: 0x00000078, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000078, Max: 0xffffffff, ABSOLUTE)
 
-    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000008   Data   RO            1    RESET               q3.o
-    0x00000008   0x00000070   Code   RO            2  * MYCODE              q3.o
-
-
-    Execution Region ER_RW (Base: 0x10000000, Size: 0x00000014, Max: 0xffffffff, ABSOLUTE)
-
-    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x10000000   0x00000011   Data   RW            3    DATASEG             q3.o
+    0x00000000   0x00000000   0x00000008   Data   RO            1    RESET               q3.o
+    0x00000008   0x00000008   0x00000070   Code   RO            2  * MYCODE              q3.o
 
 
-    Execution Region ER_ZI (Base: 0x10000014, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x10000000, Load base: 0x00000078, Size: 0x00000014, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x10000000   0x00000078   0x00000011   Data   RW            3    DATASEG             q3.o
+
+
+    Execution Region ER_ZI (Exec base: 0x10000014, Load base: 0x0000008c, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 

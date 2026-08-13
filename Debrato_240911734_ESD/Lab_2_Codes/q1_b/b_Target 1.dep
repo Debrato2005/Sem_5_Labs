@@ -1,2 +1,3 @@
 Dependencies for Project 'b', Target 'Target 1': (DO NOT MODIFY !)
-F (.\b.asm)(0x6A740B16)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\NXP\LPC17xx --list "b.lst" --xref -o "b.o" --depend "b.d")
+CompilerVersion: <unknown>
+F (.\b.asm)(0x6A742674)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\NXP\LPC17xx --list "b.lst" --xref -o "b.o" --depend "b.d")
