@@ -1,0 +1,156 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;ADDITION OF 2 32BIT NUMBERS
+    2 00000000                 AREA             RESET,DATA, READONLY
+    3 00000000                 EXPORT           __Vectors
+    4 00000000         
+    5 00000000         __Vectors
+    6 00000000 10001000        DCD              0X10001000  ;STACK POINTER
+    7 00000004 00000000        DCD              Reset_Handler ;RESET VECTOR
+    8 00000008         
+    9 00000008                 ALIGN
+   10 00000008                 AREA             MYCODE,CODE , READONLY
+   11 00000000                 ENTRY
+   12 00000000                 EXPORT           Reset_Handler
+   13 00000000         
+   14 00000000         Reset_Handler
+   15 00000000 4807            LDR              R0,=SRC1    ; GETS ADDRESS
+   16 00000002 4908            LDR              R1,=SRC2
+   17 00000004 4A08            LDR              R2,=SUM
+   18 00000006 4B09            LDR              R3,=CARRY
+   19 00000008         
+   20 00000008 6804            LDR              R4,[R0]     ; GETS VALUE AT THE
+                                                             ADDRESS
+   21 0000000A 680D            LDR              R5,[R1]
+   22 0000000C         
+   23 0000000C 1966            ADDS             R6,R4,R5    ; ADDS THEN UPDATES
+                                                             CARRY
+   24 0000000E F147 0700       ADC              R7,#0       ; ADD CARRY TO R3
+   25 00000012         
+   26 00000012 6016            STR              R6,[R2]
+   27 00000014 701F            STRB             R7,[R3]
+   28 00000016         
+   29 00000016 E7FE    STOP    B                STOP
+   30 00000018 12345678 
+                       SRC1    DCD              0X12345678
+   31 0000001C 87654321 
+                       SRC2    DCD              0X87654321
+   32 00000020 00000000 
+              00000000 
+              00000000 
+              00000000         AREA             DATASEG, DATA, READWRITE
+   33 00000000 00000000 
+                       SUM     DCD              0
+   34 00000004 00      CARRY   DCB              0
+   35 00000005         
+   36 00000005                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=sum.d -o
+sum.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NXP\
+LPC17xx --predefine="__EVAL SETA 1" --list=sum.lst sum.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 2 in file sum.asm
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 5 in file sum.asm
+   Uses
+      At line 3 in file sum.asm
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MYCODE 00000000
+
+Symbol: MYCODE
+   Definitions
+      At line 10 in file sum.asm
+   Uses
+      None
+Comment: MYCODE unused
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 14 in file sum.asm
+   Uses
+      At line 7 in file sum.asm
+      At line 12 in file sum.asm
+
+SRC1 00000018
+
+Symbol: SRC1
+   Definitions
+      At line 30 in file sum.asm
+   Uses
+      At line 15 in file sum.asm
+Comment: SRC1 used once
+SRC2 0000001C
+
+Symbol: SRC2
+   Definitions
+      At line 31 in file sum.asm
+   Uses
+      At line 16 in file sum.asm
+Comment: SRC2 used once
+STOP 00000016
+
+Symbol: STOP
+   Definitions
+      At line 29 in file sum.asm
+   Uses
+      At line 29 in file sum.asm
+Comment: STOP used once
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CARRY 00000004
+
+Symbol: CARRY
+   Definitions
+      At line 34 in file sum.asm
+   Uses
+      At line 18 in file sum.asm
+Comment: CARRY used once
+DATASEG 00000000
+
+Symbol: DATASEG
+   Definitions
+      At line 32 in file sum.asm
+   Uses
+      None
+Comment: DATASEG unused
+SUM 00000000
+
+Symbol: SUM
+   Definitions
+      At line 33 in file sum.asm
+   Uses
+      At line 17 in file sum.asm
+Comment: SUM used once
+3 symbols
+343 symbols in table

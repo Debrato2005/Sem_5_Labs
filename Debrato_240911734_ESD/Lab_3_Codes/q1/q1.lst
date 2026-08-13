@@ -1,0 +1,176 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;Write a program to add ten 32 bit numbers stored in cod
+                       e segment and store
+    2 00000000         ;the result in data segment
+    3 00000000                 AREA             RESET,DATA, READONLY
+    4 00000000                 EXPORT           __Vectors
+    5 00000000         
+    6 00000000         __Vectors
+    7 00000000 10001000        DCD              0X10001000  ;STACK POINTER
+    8 00000004 00000000        DCD              Reset_Handler ;RESET VECTOR
+    9 00000008         
+   10 00000008                 ALIGN
+   11 00000008                 AREA             MYCODE,CODE , READONLY
+   12 00000000                 ENTRY
+   13 00000000                 EXPORT           Reset_Handler
+   14 00000000         
+   15 00000000         Reset_Handler
+   16 00000000 4811            LDR              R0,=SRC     ; GETS ADDRESS
+   17 00000002 4912            LDR              R1,=SUM
+   18 00000004 4A12            LDR              R2,=CARRY
+   19 00000006 F04F 030A       MOV              R3,#10      ; COUNTER
+   20 0000000A         
+   21 0000000A F850 4B04 
+                       L1      LDR              R4,[R0],#4  ; GETS VALUE AT THE
+                                                             ADDRESS THEN UPDAT
+                                                            ES USING POST INDEX
+                                                            ING
+   22 0000000E         
+   23 0000000E 192D            ADDS             R5,R4       ; ADDS THEN UPDATES
+                                                             CARRY, DEFAULT OF 
+                                                            R5 IS 0 
+   24 00000010 F146 0600       ADC              R6,#0       ; ADD CARRY TO R3
+   25 00000014         
+   26 00000014 3B01            SUBS             R3,#1       ; UPDATES COUNTER
+   27 00000016 D1F8            BNE              L1
+   28 00000018         
+   29 00000018 600D            STR              R5,[R1]
+   30 0000001A 7016            STRB             R6,[R2]
+   31 0000001C         
+   32 0000001C E7FE    STOP    B                STOP
+   33 0000001E 00 00 12345678 
+              23456789 
+              3456789A 
+              456789AB 
+              56789ABC 
+              6789ABCD 
+              789ABCDE 
+              89ABCDEF 
+              9ABCDEF0 
+              ABCDEF01 SRC     DCD              0x12345678,0x23456789,0x3456789
+A,0x456789AB,0x56789ABC,0x6789ABCD,0x789ABCDE,0x89ABCDEF,0x9ABCDEF0,0xABCDEF01
+   34 00000048 00000000 
+              00000000 
+              00000000         AREA             DATASEG, DATA, READWRITE
+   35 00000000 00000000 
+                       SUM     DCD              0
+   36 00000004 00      CARRY   DCB              0
+   37 00000005         
+   38 00000005                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=q1.d -oq
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+1.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NXP\LP
+C17xx --predefine="__EVAL SETA 1" --list=q1.lst q1.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 3 in file q1.asm
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 6 in file q1.asm
+   Uses
+      At line 4 in file q1.asm
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+L1 0000000A
+
+Symbol: L1
+   Definitions
+      At line 21 in file q1.asm
+   Uses
+      At line 27 in file q1.asm
+Comment: L1 used once
+MYCODE 00000000
+
+Symbol: MYCODE
+   Definitions
+      At line 11 in file q1.asm
+   Uses
+      None
+Comment: MYCODE unused
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 15 in file q1.asm
+   Uses
+      At line 8 in file q1.asm
+      At line 13 in file q1.asm
+
+SRC 00000020
+
+Symbol: SRC
+   Definitions
+      At line 33 in file q1.asm
+   Uses
+      At line 16 in file q1.asm
+Comment: SRC used once
+STOP 0000001C
+
+Symbol: STOP
+   Definitions
+      At line 32 in file q1.asm
+   Uses
+      At line 32 in file q1.asm
+Comment: STOP used once
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CARRY 00000004
+
+Symbol: CARRY
+   Definitions
+      At line 36 in file q1.asm
+   Uses
+      At line 18 in file q1.asm
+Comment: CARRY used once
+DATASEG 00000000
+
+Symbol: DATASEG
+   Definitions
+      At line 34 in file q1.asm
+   Uses
+      None
+Comment: DATASEG unused
+SUM 00000000
+
+Symbol: SUM
+   Definitions
+      At line 35 in file q1.asm
+   Uses
+      At line 17 in file q1.asm
+Comment: SUM used once
+3 symbols
+343 symbols in table

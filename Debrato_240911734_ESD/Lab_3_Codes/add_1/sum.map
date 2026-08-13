@@ -1,0 +1,102 @@
+ARM Linker, 5.03 [Build 24] [MDK-ARM Lite]
+
+==============================================================================
+
+Section Cross References
+
+    sum.o(RESET) refers to sum.o(MYCODE) for Reset_Handler
+    sum.o(MYCODE) refers to sum.o(DATASEG) for SUM
+
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    RESET                                    0x00000000   Section        8  sum.o(RESET)
+    sum.asm                                  0x00000000   Number         0  sum.o ABSOLUTE
+    MYCODE                                   0x00000008   Section       48  sum.o(MYCODE)
+    SRC1                                     0x00000020   Data           4  sum.o(MYCODE)
+    SRC2                                     0x00000024   Data           4  sum.o(MYCODE)
+    DATASEG                                  0x10000000   Section        5  sum.o(DATASEG)
+    SUM                                      0x10000000   Data           4  sum.o(DATASEG)
+    CARRY                                    0x10000004   Data           1  sum.o(DATASEG)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv4$P$D$K$B$S$PE$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$EBA8$STANDARDLIB$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __Vectors                                0x00000000   Data           0  sum.o(RESET)
+    Reset_Handler                            0x00000009   Thumb Code     0  sum.o(MYCODE)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x00000009
+
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00000040, Max: 0xffffffff, ABSOLUTE)
+
+    Execution Region ER_RO (Base: 0x00000000, Size: 0x00000038, Max: 0xffffffff, ABSOLUTE)
+
+    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000000   0x00000008   Data   RO            1    RESET               sum.o
+    0x00000008   0x00000030   Code   RO            2  * MYCODE              sum.o
+
+
+    Execution Region ER_RW (Base: 0x10000000, Size: 0x00000008, Max: 0xffffffff, ABSOLUTE)
+
+    Base Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x10000000   0x00000005   Data   RW            3    DATASEG             sum.o
+
+
+    Execution Region ER_ZI (Base: 0x10000008, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+        48         24          8          5          0        208   sum.o
+
+    ----------------------------------------------------------------------
+        48         24          8          8          0        208   Object Totals
+         0          0          0          0          0          0   (incl. Generated)
+         0          0          0          3          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+         0          0          0          0          0          0   Library Totals
+         0          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+        48         24          8          8          0        208   Grand Totals
+        48         24          8          8          0        208   ELF Image Totals
+        48         24          8          8          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                   56 (   0.05kB)
+    Total RW  Size (RW Data + ZI Data)                 8 (   0.01kB)
+    Total ROM Size (Code + RO Data + RW Data)         64 (   0.06kB)
+
+==============================================================================
+
