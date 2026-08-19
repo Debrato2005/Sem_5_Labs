@@ -424,9 +424,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>Q3.ASM</FileName>
+              <FileName>Q3.asm</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Q3.ASM</FilePath>
+              <FilePath>.\Q3.asm</FilePath>
             </File>
           </Files>
         </Group>
