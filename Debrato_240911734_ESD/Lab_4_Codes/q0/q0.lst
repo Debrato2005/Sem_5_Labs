@@ -1,0 +1,152 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Convert 2 unpacked HEX digits to equivalent ASCII
+    2 00000000         ; 0-9  -> add 0x30
+    3 00000000         ; A-F  -> add 0x37
+    4 00000000         ;BCD WOULD ONY HAVE 0-9 NOT A-F
+    5 00000000         
+    6 00000000                 AREA             RESET,DATA, READONLY
+    7 00000000                 EXPORT           __Vectors
+    8 00000000         
+    9 00000000         __Vectors
+   10 00000000 10001000        DCD              0X10001000  ;STACK POINTER
+   11 00000004 00000000        DCD              Reset_Handler ;RESET VECTOR
+   12 00000008         
+   13 00000008                 ALIGN
+   14 00000008                 AREA             MYCODE,CODE , READONLY
+   15 00000000                 ENTRY
+   16 00000000                 EXPORT           Reset_Handler
+   17 00000000         
+   18 00000000         Reset_Handler
+   19 00000000 4808            LDR              R0,=SRC
+   20 00000002 4909            LDR              R1,=DEST
+   21 00000004 F04F 0302       MOV              R3 ,#2      ;
+   22 00000008         
+   23 00000008 F810 2B01 
+                       L1      LDRB             R2,[R0],#1  ;LOAD LOWER BITS TH
+                                                            EN POINTING TO NEXT
+                                                             BYTE
+   24 0000000C 2A0A            CMP              R2,#0XA     ; CHECKS IF ALPHABE
+                                                            T OR NUMBER
+   25 0000000E BF34 3230       ADDLO            R2,#0X30    ; NO CARRY BECAUSE 
+                                                            EVEN THE LARGEST AD
+                                                            DITION POSSIBLE IN 
+                                                            THIS CASE FITS IN 8
+                                                            BITS IE 1BYTE
+   26 00000012 3237            ADDHS            R2,#0X37    ;
+   27 00000014 F801 2B01       STRB             R2,[R1],#1  ;
+   28 00000018 3B01            SUBS             R3,#1       ;
+   29 0000001A D1F5            BNE              L1
+   30 0000001C         
+   31 0000001C E7FE    STOP    B                STOP
+   32 0000001E 00 00 00000102 
+                       SRC     DCD              0x0102      ; SHOULDNT IT BE 0X
+                                                            000100002
+   33 00000024 00000000 
+              00000000         AREA             DATASEG, DATA, READWRITE
+   34 00000000 00000000 
+                       DEST    DCD              0
+   35 00000004         
+   36 00000004                 END
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=q0.d -oq
+0.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\NXP\LP
+C17xx --predefine="__EVAL SETA 1" --list=q0.lst q0.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 6 in file q0.asm
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 9 in file q0.asm
+   Uses
+      At line 7 in file q0.asm
+Comment: __Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+L1 00000008
+
+Symbol: L1
+   Definitions
+      At line 23 in file q0.asm
+   Uses
+      At line 29 in file q0.asm
+Comment: L1 used once
+MYCODE 00000000
+
+Symbol: MYCODE
+   Definitions
+      At line 14 in file q0.asm
+   Uses
+      None
+Comment: MYCODE unused
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 18 in file q0.asm
+   Uses
+      At line 11 in file q0.asm
+      At line 16 in file q0.asm
+
+SRC 00000020
+
+Symbol: SRC
+   Definitions
+      At line 32 in file q0.asm
+   Uses
+      At line 19 in file q0.asm
+Comment: SRC used once
+STOP 0000001C
+
+Symbol: STOP
+   Definitions
+      At line 31 in file q0.asm
+   Uses
+      At line 31 in file q0.asm
+Comment: STOP used once
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+DATASEG 00000000
+
+Symbol: DATASEG
+   Definitions
+      At line 33 in file q0.asm
+   Uses
+      None
+Comment: DATASEG unused
+DEST 00000000
+
+Symbol: DEST
+   Definitions
+      At line 34 in file q0.asm
+   Uses
+      At line 20 in file q0.asm
+Comment: DEST used once
+2 symbols
+342 symbols in table
