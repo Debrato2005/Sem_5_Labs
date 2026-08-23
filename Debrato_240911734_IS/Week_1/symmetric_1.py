@@ -30,7 +30,7 @@ def caesar(ch, key):
 #     if 'A' <= ch<='Z':
 #         return chr((ord(ch)-ord('A')-key)%26+ord('A'))
 #     elif 'a' <= ch<='z':
-#         return chr((ord(ch)-ord('a')-key)%26+ord('z'))
+#         return chr((ord(ch)-ord('a')-key)%26+ord('z'))-
 #     else:
 #         return ch
 
@@ -433,21 +433,26 @@ print(f"Autokey decipher is      : {plain}" )
 # only 25 positions, I and J are traditionally combined into one cell.
 # During preprocessing, J is therefore treated as I
 print()
-text = input("Enter the plaintext for plalyfair: ")
+text = input("Enter the plaintext for playfair: ")
 key = input("Enter the key: ")
 
 def create_matrix(key):
     alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ" #no J
 #cannot mathematically know whether the original was I or j
     key=key.upper()
-    ke="".join(ch for ch in key if ch.isalpha())
+    key="".join(ch for ch in key if ch.isalpha())
     key=key.replace("J","I")
 
     sequence=""
 
     for ch in key:
         if ch not in sequence:
-            sequence+=ch
+            sequence += ch
+
+    # Add remaining letters from alphabet
+    for ch in alphabet:
+        if ch not in sequence:
+            sequence += ch
 
     matrix=[]
 
@@ -460,16 +465,26 @@ matrix=create_matrix(key)
 print()
 print("Playfair Matrix")
 for row in matrix:
-    print(" ".join(row))
+    print(" ".join(row)) # can directly print row but this intoduces space
+# join() follows the format: separator.join(iterable)
+# It combines the elements using the given separator.
+# "".join(row)   -> combines without a separator
+# " ".join(row)  -> combines with a space between elements
+# "-".join(row)  -> combines with "-" between elements
 
 def prepare_text(text):
-    text="".join(ch.ipper() for ch in text if ch.isalpha())
-    text=text.replace("j","I")
+    text="".join(ch.upper() for ch in text if ch.isalpha())
+    text=text.replace("J","I")
 
     prepared=""
     i=0
-
-    while i<len(text):#checking if pasired up or not
+# Process the text two characters at a time. First check whether the current
+# character is the final unpaired character before accessing text[i + 1], which
+# prevents an out-of-range index. If no second character exists, pair the
+# character with "X". If the next character is the same, split the pair by
+# inserting "X" after the first character and advance by one. Otherwise, use
+# both characters as a pair and advance by two.
+    while i<len(text):#checking if paired up or not
         first=text[i]
 
         if i+1==len(text):
@@ -502,8 +517,11 @@ def find_position(matrix,ch):
                 return row,col
 
 def playfair_encrypt(text,matrix): #prepared_text
+    #if same row shift/wrap right
+        #if same col shift/wrap one posn downwards
+        #else just replace their cols 
     cipher="" 
-    for i in range(0,len(text),2):
+    for i in range(0,len(text),2): #mainatgaining diagraphs
         first=text[i]
         second=text[i+1]
         row1,col1=find_position(matrix,first)
@@ -597,7 +615,7 @@ print(f"Decrypted text: {decrypted_text}")
 # Use the MMI of the determinant to calculate the inverse key matrix
 # K^(-1) is used for Hill cipher decryption
 #==============================================================================================
-
+#learn hill cipher
 def prepare_text(text, block_size):
 
     # Remove spaces and non-alphabetic characters
