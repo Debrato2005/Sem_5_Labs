@@ -10,52 +10,58 @@
 ;Return (i*a);
 
 ;find the remainder by repeated subtraction.
-;lcm=a*b/gcd
+;lcm=a*b/gcd Do the division before multiplication acc to gpt
 ;WORKS FOR 32BIT MULTIPLICATION OUTPUT
 
 	AREA RESET,DATA, READONLY
 	EXPORT __Vectors
 
 __Vectors
-	DCD 0X10001000;STACK POINTER
-	DCD Reset_Handler;RESET VECTOR
-	
+	DCD 0X10001000 ;stack pointer value when stack is emoty
+	DCD Reset_Handler ; reset vector
+
 	ALIGN
-	AREA MYCODE,CODE , READONLY
+
+	AREA mycode, CODE , READONLY
 	ENTRY
-	EXPORT Reset_Handler
-
+	EXPORT Reset_Handler ;till here common
 Reset_Handler
-	LDR R0,=SRC1; GETS ADDRESS
-	LDR R1,=SRC2
-	LDR R2,=GCD
-	LDR R3,=LCM
+	LDR R0,=SRC1;A ADDR
+	LDR R1,=SRC2;B ADDR
+	LDR R8,=DST
 	
-	LDR R4,[R0]
-	LDR R5,[R1]
-	MOV R6,R4
-	MOV R7,R5
-L1	CMP R4,R5
-	BEQ L2 
-	SUBHI R4,R5
-	SUBLO R5,R4
-	B L1
-L2	STR R4,[R2]
-	MUL R8,R6,R7
-L3	CMP R8,R4
-	BCC DONE
-	SUB R8,R4
-	ADD R9,#1
-	B L3
-DONE STR R9,[R3]
-	
-STOP B STOP
-SRC1 DCD 0x12
-SRC2 DCD 0x18
-	AREA DATASEG, DATA, READWRITE
-GCD DCD 0
-LCM DCD 0
+	LDR R2,[R0];A
+	LDR R3,[R1];B
 
+	MOV R4, R2; STORES A
+	MOV R9, R3; STORES B
+	
+L1	CMP R2, R3;GCD
+	BEQ L2
+	SUBHI R2,R3
+	SUBLO R3,R2
+	B L1
+	;GCD IN R2,R3
+	
+L2  CMP R4,R2;DIV
+	BLO EXIT
+	SUB R4,R2
+	ADD R5,#1
+	B L2
+	
+EXIT UMULL R6,R7,R5,R9
+	STR R6,[R8],#4
+	STR R7,[R8]
+	
+stop b stop
+SRC1 DCD 0X03
+SRC2 DCD 0X09
+	AREA mydata , DATA, READWRITE
+DST DCD 0,0
 	END
-		
+	
+
+	
+
+			
 		

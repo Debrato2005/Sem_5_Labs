@@ -14,7 +14,7 @@ __Vectors
 	ENTRY
 	EXPORT Reset_Handler ;till here common
 Reset_Handler
-	LDR R0,=SRC
+	LDR R0,=SRC; BCZ ADDRESS IS 32BIT
 	LDRH R1,[R0];R0=0XFF12
 
 	LDR R2,=DST
