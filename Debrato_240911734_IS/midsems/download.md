@@ -1,8 +1,8 @@
-python -m ensurepip --upgrade \&\& python -m pip install --upgrade pip \&\& python -m pip install pycryptodome cryptography numpy sympy matplotlib ecdsa coincurve flask psutil
+python -m pip install uv \&\& \\
 
-python -m pip install --upgrade pip \&\& python -m pip install pycryptodome cryptography numpy sympy matplotlib ecdsa coincurve flask psutil
+uv pip install pycryptodome cryptography numpy sympy matplotlib ecdsa flask psutil \&\& \\
 
-
+python -c "from Crypto.Cipher import AES, DES, DES3; from Crypto.PublicKey import RSA, ECC, ElGamal; import cryptography, numpy, sympy, matplotlib, ecdsa, flask, psutil; print('IS LAB ENVIRONMENT READY')"
 
 \########################################################################################################################################################################################################
 
@@ -45,24 +45,6 @@ import logging
 import json
 
 import sqlite3
-
-
-
-\########################################################################################################################################################################################################
-
-
-
-python -m venv .venv
-
-source .venv/bin/activate
-
-python -m pip install --upgrade pip
-
-python -m pip install pycryptodome cryptography numpy sympy matplotlib ecdsa coincurve flask psutil
-
-
-
-python -c "from Crypto.Cipher import AES, DES, DES3; from Crypto.PublicKey import RSA, ECC; import cryptography, numpy, sympy, matplotlib, ecdsa, flask, psutil; print('IS LAB ENVIRONMENT READY')"
 
 
 
