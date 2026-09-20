@@ -1,3 +1,5 @@
+python -m ensurepip --upgrade \&\& python -m pip install --upgrade pip \&\& python -m pip install pycryptodome cryptography numpy sympy matplotlib ecdsa coincurve flask psutil
+
 python -m pip install --upgrade pip \&\& python -m pip install pycryptodome cryptography numpy sympy matplotlib ecdsa coincurve flask psutil
 
 
