@@ -6,6 +6,8 @@
 //P2.12
 // if switch pressed value is 0 down
 // up down counter should be from the current value not always from 0 or 255
+
+
 #include <LPC17xx.h>
 int main()
 {
