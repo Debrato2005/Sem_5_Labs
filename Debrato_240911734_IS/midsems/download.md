@@ -79,6 +79,8 @@ bash -lc 'set -euo pipefail; REALHOME="$HOME"; ROOT="$REALHOME/bonsai-local"; fo
 
 bash -lc 'ROOT="$HOME/bonsai-local"; export HOME="$ROOT/home" XDG\_CACHE\_HOME="$ROOT/cache" XDG\_CONFIG\_HOME="$ROOT/config" XDG\_DATA\_HOME="$ROOT/data" BONSAI\_FAMILY=bonsai2 BONSAI\_MODEL=27B; cd "$ROOT/Bonsai-demo"; ./scripts/run\_llama.sh -if -cnv -mli'
 
+end with \\ after the promot for it to start thinking
+
 
 
 bash -lc 'ROOT="$HOME/bonsai-local"; if \[ -d "$ROOT" ]; then pkill -TERM -f "$ROOT/Bonsai-demo/bin/.\*/llama-" 2>/dev/null || true; sleep 1; pkill -KILL -f "$ROOT/Bonsai-demo/bin/.\*/llama-" 2>/dev/null || true; rm -rf "$ROOT"; fi; echo "Removed temporary Bonsai 2 27B installation, model, binaries, venvs, cache, config and application files."'
