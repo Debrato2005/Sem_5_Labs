@@ -73,8 +73,19 @@ bash -lc 'ROOT="$HOME/qwen-local"; export HOME="$ROOT/home" OLLAMA\_MODELS="$ROO
 bash -lc 'ROOT="$HOME/qwen-local"; P="$ROOT/ollama/bin/ollama"; if \[ -d "$ROOT" ]; then pkill -TERM -f "$P" 2>/dev/null || true; for i in $(seq 1 50); do pgrep -f "$P" >/dev/null || break; sleep 0.2; done; pkill -KILL -f "$P" 2>/dev/null || true; rm -rf "$ROOT"; fi; echo "Removed temporary Ollama/Qwen installation, model, venv, Ollama keys/config/cache, and application logs."'
 
 \########################################################################################################################################################################################################
+bash -lc 'set -euo pipefail; REALHOME="$HOME"; ROOT="$REALHOME/bonsai-local"; for c in git gcc curl; do command -v "$c" >/dev/null || { echo "$c missing — stopping; no sudo attempted."; exit 1; }; done; rm -rf "$ROOT"; mkdir -p "$ROOT"/{home,cache,config,data}; export HOME="$ROOT/home" XDG\_CACHE\_HOME="$ROOT/cache" XDG\_CONFIG\_HOME="$ROOT/config" XDG\_DATA\_HOME="$ROOT/data"; git clone --depth 1 PrismML-Eng/Bonsai-demo.git "$ROOT/Bonsai-demo"; cd "$ROOT/Bonsai-demo"; export BONSAI\_FAMILY=bonsai2 BONSAI\_MODEL=27B BONSAI\_SKIP\_MLX=1 BONSAI\_OPENWEBUI=0 BONSAI\_CODE\_INTERPRETER=0; ./setup.sh'
+
+
+
+bash -lc 'ROOT="$HOME/bonsai-local"; export HOME="$ROOT/home" XDG\_CACHE\_HOME="$ROOT/cache" XDG\_CONFIG\_HOME="$ROOT/config" XDG\_DATA\_HOME="$ROOT/data" BONSAI\_FAMILY=bonsai2 BONSAI\_MODEL=27B; cd "$ROOT/Bonsai-demo"; ./scripts/run\_llama.sh -if -cnv'
+
+
+
+bash -lc 'ROOT="$HOME/bonsai-local"; if \[ -d "$ROOT" ]; then pkill -TERM -f "$ROOT/Bonsai-demo/bin/.\*/llama-" 2>/dev/null || true; sleep 1; pkill -KILL -f "$ROOT/Bonsai-demo/bin/.\*/llama-" 2>/dev/null || true; rm -rf "$ROOT"; fi; echo "Removed temporary Bonsai 2 27B installation, model, binaries, venvs, cache, config and application files."'
 
 """Analyze this Information Security lab question before coding.
+
+\########################################################################################################################################################################################################
 
 
 
