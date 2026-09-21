@@ -128,290 +128,1577 @@ The system should clearly display all relevant security information and verifica
 
 ## Complete solution — `q1\_healthsecure.py`
 
-```python
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1\_OAEP
+from Crypto.Cipher import DES
+
+from Crypto.Util.Padding import pad, unpad
+
+from Crypto.Random import get\_random\_bytes
+
 from Crypto.Hash import SHA256
-from Crypto.Signature import pkcs1\_15
+
+from Crypto.Util.number import getPrime, isPrime
+
+
+
 from datetime import datetime
+
+from math import gcd
+
+import secrets
+
 import json
 
-DB = "healthsecure\_records.json"
-PRIV = "doctor\_private.pem"
-PUB = "doctor\_public.pem"
+import os
 
 
-def generate\_keys():
-    key = RSA.generate(2048)
-    open(PRIV, "wb").write(key.export\_key())
-    open(PUB, "wb").write(key.publickey().export\_key())
-    print("Doctor RSA key pair generated.")
+
+
+
+RECORD\_FILE = "securevault\_records.json"
+
+PUBLIC\_KEY\_FILE = "client\_elgamal\_public.json"
+
+PRIVATE\_KEY\_FILE = "client\_elgamal\_private.json"
+
+AUDIT\_FILE = "securevault\_audit.json"
+
+
+
+
+
+\# ============================================================
+
+\# FILE HELPERS
+
+\# ============================================================
+
+
+
+def load\_json(file, default):
+
+&#x20;   try:
+
+&#x20;       return json.load(open(file))
+
+&#x20;   except (FileNotFoundError, json.JSONDecodeError):
+
+&#x20;       return default
+
+
+
+
+
+def save\_json(file, data):
+
+&#x20;   json.dump(data, open(file, "w"), indent=2)
+
+
+
+
+
+def timestamp():
+
+&#x20;   return datetime.now().isoformat(timespec="seconds")
+
+
+
+
+
+\# ============================================================
+
+\# ELGAMAL KEY GENERATION
+
+\# ============================================================
+
+
+
+def generate\_elgamal\_keys(bits=256):
+
+
+
+&#x20;   # Generate safe prime p = 2q + 1
+
+&#x20;   while True:
+
+&#x20;       q = getPrime(bits - 1)
+
+&#x20;       p = 2 \* q + 1
+
+
+
+&#x20;       if isPrime(p):
+
+&#x20;           break
+
+
+
+&#x20;   # Find primitive root g for safe prime p
+
+&#x20;   while True:
+
+&#x20;       g = secrets.randbelow(p - 3) + 2
+
+
+
+&#x20;       if pow(g, 2, p) != 1 and pow(g, q, p) != 1:
+
+&#x20;           break
+
+
+
+&#x20;   x = secrets.randbelow(p - 3) + 2
+
+&#x20;   y = pow(g, x, p)
+
+
+
+&#x20;   public\_key = {
+
+&#x20;       "p": p,
+
+&#x20;       "g": g,
+
+&#x20;       "y": y
+
+&#x20;   }
+
+
+
+&#x20;   private\_key = {
+
+&#x20;       "x": x
+
+&#x20;   }
+
+
+
+&#x20;   save\_json(PUBLIC\_KEY\_FILE, public\_key)
+
+&#x20;   save\_json(PRIVATE\_KEY\_FILE, private\_key)
+
+
+
+&#x20;   print("ElGamal key pair generated.")
+
+&#x20;   print("Public key:", (p, g, y))
+
+
+
 
 
 def ensure\_keys():
-    try:
-        open(PRIV, "rb").close()
-        open(PUB, "rb").close()
-    except FileNotFoundError:
-        generate\_keys()
+
+&#x20;   if not (
+
+&#x20;       os.path.exists(PUBLIC\_KEY\_FILE)
+
+&#x20;       and os.path.exists(PRIVATE\_KEY\_FILE)
+
+&#x20;   ):
+
+&#x20;       generate\_elgamal\_keys()
 
 
-def load\_records():
-    try:
-        return json.load(open(DB))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return \[]
 
 
-def save\_records(records):
-    json.dump(records, open(DB, "w"), indent=2)
+
+\# ============================================================
+
+\# ELGAMAL DIGITAL SIGNATURE
+
+\# ============================================================
+
+
+
+def elgamal\_sign(data):
+
+
+
+&#x20;   public = load\_json(PUBLIC\_KEY\_FILE, {})
+
+&#x20;   private = load\_json(PRIVATE\_KEY\_FILE, {})
+
+
+
+&#x20;   p = public\["p"]
+
+&#x20;   g = public\["g"]
+
+&#x20;   x = private\["x"]
+
+
+
+&#x20;   h = int.from\_bytes(
+
+&#x20;       SHA256.new(data).digest(),
+
+&#x20;       "big"
+
+&#x20;   )
+
+
+
+&#x20;   while True:
+
+
+
+&#x20;       k = secrets.randbelow(p - 2) + 1
+
+
+
+&#x20;       if gcd(k, p - 1) != 1:
+
+&#x20;           continue
+
+
+
+&#x20;       r = pow(g, k, p)
+
+
+
+&#x20;       s = (
+
+&#x20;           (h - x \* r)
+
+&#x20;           \* pow(k, -1, p - 1)
+
+&#x20;       ) % (p - 1)
+
+
+
+&#x20;       if s != 0:
+
+&#x20;           break
+
+
+
+&#x20;   return r, s
+
+
+
+
+
+def elgamal\_verify(data, signature):
+
+
+
+&#x20;   public = load\_json(PUBLIC\_KEY\_FILE, {})
+
+
+
+&#x20;   p = public\["p"]
+
+&#x20;   g = public\["g"]
+
+&#x20;   y = public\["y"]
+
+
+
+&#x20;   r, s = signature
+
+
+
+&#x20;   if not (0 < r < p):
+
+&#x20;       return False
+
+
+
+&#x20;   if not (0 < s < p - 1):
+
+&#x20;       return False
+
+
+
+&#x20;   h = int.from\_bytes(
+
+&#x20;       SHA256.new(data).digest(),
+
+&#x20;       "big"
+
+&#x20;   )
+
+
+
+&#x20;   left = pow(g, h, p)
+
+
+
+&#x20;   right = (
+
+&#x20;       pow(y, r, p)
+
+&#x20;       \* pow(r, s, p)
+
+&#x20;   ) % p
+
+
+
+&#x20;   return left == right
+
+
+
+
+
+\# ============================================================
+
+\# RECORD HELPERS
+
+\# ============================================================
+
 
 
 def get\_record(records):
-    rid = input("Record ID: ")
-    for r in records:
-        if r\["id"] == rid:
-            return r
-    print("Record not found.")
-    return None
 
 
-def rsa\_encrypt\_chunks(pub, data):
-    size = pub.size\_in\_bytes() - 2 \* SHA256.digest\_size - 2
-    return \[
-        PKCS1\_OAEP.new(pub, hashAlgo=SHA256).encrypt(data\[i:i + size])
-        for i in range(0, len(data), size)
-    ]
+
+&#x20;   record\_id = input("Record ID: ")
 
 
-def rsa\_decrypt\_chunks(priv, chunks):
-    return b"".join(
-        PKCS1\_OAEP.new(priv, hashAlgo=SHA256).decrypt(c)
-        for c in chunks
-    )
+
+&#x20;   for record in records:
 
 
-def verify\_record(record, pub):
-    chunks = \[bytes.fromhex(x) for x in record\["ciphertext"]]
-    encrypted\_data = b"".join(chunks)
 
-    current\_hash = SHA256.new(encrypted\_data).hexdigest()
-    integrity\_ok = current\_hash == record\["hash"]
+&#x20;       if record\["id"] == record\_id:
 
-    try:
-        pkcs1\_15.new(pub).verify(
-            SHA256.new(encrypted\_data),
-            bytes.fromhex(record\["signature"])
-        )
-        signature\_ok = True
-    except (ValueError, TypeError):
-        signature\_ok = False
-
-    return integrity\_ok, signature\_ok, chunks
+&#x20;           return record
 
 
-def doctor\_menu(records):
-    while True:
-        print("\\n--- DOCTOR ---")
-        print("1. Generate new RSA key pair")
-        print("2. Add patient record")
-        print("3. View stored patient records")
-        print("4. Verify and decrypt a record")
-        print("5. Back")
-        ch = input("Choice: ")
 
-        if ch == "1":
-            if records:
-                print("Keys not regenerated because existing records depend on the current key pair.")
-            else:
-                generate\_keys()
+&#x20;   print("Record not found.")
 
-        elif ch == "2":
-            rid = input("Record ID: ")
-            if any(r\["id"] == rid for r in records):
-                print("Record ID already exists.")
-                continue
-
-            patient = {
-                "name": input("Name: "),
-                "age": input("Age: "),
-                "gender": input("Gender: "),
-                "blood\_group": input("Blood Group: "),
-                "diagnosis": input("Diagnosis: "),
-                "other\_details": input("Other medical details: ")
-            }
-
-            data = json.dumps(patient).encode()
-
-            priv = RSA.import\_key(open(PRIV, "rb").read())
-            pub = priv.publickey()
-
-            chunks = rsa\_encrypt\_chunks(pub, data)
-            encrypted\_data = b"".join(chunks)
-
-            h = SHA256.new(encrypted\_data)
-            signature = pkcs1\_15.new(priv).sign(h)
-
-            record = {
-                "id": rid,
-                "ciphertext": \[c.hex() for c in chunks],
-                "hash": h.hexdigest(),
-                "signature": signature.hex(),
-                "timestamp": datetime.now().isoformat(timespec="seconds")
-            }
-
-            records.append(record)
-            save\_records(records)
-            print("Encrypted patient record stored.")
-
-        elif ch == "3":
-            if not records:
-                print("No records.")
-            for r in records:
-                print("\\nRecord ID:", r\["id"])
-                print("Encrypted data:", r\["ciphertext"])
-                print("SHA-256:", r\["hash"])
-                print("Signature:", r\["signature"])
-                print("Timestamp:", r\["timestamp"])
-
-        elif ch == "4":
-            r = get\_record(records)
-            if not r:
-                continue
-
-            pub = RSA.import\_key(open(PUB, "rb").read())
-            integrity\_ok, signature\_ok, chunks = verify\_record(r, pub)
-
-            print("Integrity:", "VALID" if integrity\_ok else "INVALID")
-            print("Signature:", "VALID" if signature\_ok else "INVALID")
-
-            if integrity\_ok and signature\_ok:
-                priv = RSA.import\_key(open(PRIV, "rb").read())
-                plaintext = rsa\_decrypt\_chunks(priv, chunks)
-                patient = json.loads(plaintext.decode())
-
-                print("\\nDecrypted patient information:")
-                for k, v in patient.items():
-                    print(f"{k}: {v}")
-            else:
-                print("Verification failed. Decryption not performed.")
-
-        elif ch == "5":
-            break
-
-        else:
-            print("Invalid choice.")
+&#x20;   return None
 
 
-def nurse\_menu(records):
-    pub = RSA.import\_key(open(PUB, "rb").read())
-
-    while True:
-        print("\\n--- NURSE ---")
-        print("1. View encrypted patient records")
-        print("2. Verify integrity and authenticity")
-        print("3. Back")
-        ch = input("Choice: ")
-
-        if ch == "1":
-            if not records:
-                print("No records.")
-            for r in records:
-                print("\\nRecord ID:", r\["id"])
-                print("Encrypted data:", r\["ciphertext"])
-                print("SHA-256:", r\["hash"])
-                print("Signature:", r\["signature"])
-                print("Timestamp:", r\["timestamp"])
-
-        elif ch == "2":
-            r = get\_record(records)
-            if not r:
-                continue
-
-            integrity\_ok, signature\_ok, \_ = verify\_record(r, pub)
-
-            print("Integrity:", "VALID" if integrity\_ok else "INVALID")
-            print("Signature:", "VALID" if signature\_ok else "INVALID")
-            print(
-                "Verification timestamp:",
-                datetime.now().isoformat(timespec="seconds")
-            )
-
-        elif ch == "3":
-            break
-
-        else:
-            print("Invalid choice.")
 
 
-def admin\_menu(records):
-    pub = RSA.import\_key(open(PUB, "rb").read())
 
-    while True:
-        print("\\n--- ADMIN ---")
-        print("1. View permitted record details")
-        print("2. Verify Doctor's RSA signature")
-        print("3. Back")
-        ch = input("Choice: ")
+def verify\_record(record):
 
-        if ch == "1":
-            if not records:
-                print("No records.")
-            for r in records:
-                print("\\nRecord ID:", r\["id"])
-                print("SHA-256:", r\["hash"])
-                print("Timestamp:", r\["timestamp"])
 
-        elif ch == "2":
-            r = get\_record(records)
-            if not r:
-                continue
 
-            \_, signature\_ok, \_ = verify\_record(r, pub)
-            print(
-                "Digital signature:",
-                "VALID" if signature\_ok else "INVALID"
-            )
+&#x20;   ciphertext = bytes.fromhex(record\["ciphertext"])
 
-        elif ch == "3":
-            break
 
-        else:
-            print("Invalid choice.")
+
+&#x20;   # --------------------------------------------------------
+
+&#x20;   # SHA-256 integrity verification
+
+&#x20;   # --------------------------------------------------------
+
+
+
+&#x20;   calculated\_hash = SHA256.new(ciphertext).hexdigest()
+
+
+
+&#x20;   hash\_valid = (
+
+&#x20;       calculated\_hash
+
+&#x20;       == record\["hash"]
+
+&#x20;   )
+
+
+
+&#x20;   # --------------------------------------------------------
+
+&#x20;   # ElGamal authentication verification
+
+&#x20;   # --------------------------------------------------------
+
+
+
+&#x20;   signature = (
+
+&#x20;       int(record\["signature"]\["r"]),
+
+&#x20;       int(record\["signature"]\["s"])
+
+&#x20;   )
+
+
+
+&#x20;   signature\_valid = elgamal\_verify(
+
+&#x20;       ciphertext,
+
+&#x20;       signature
+
+&#x20;   )
+
+
+
+&#x20;   return hash\_valid, signature\_valid
+
+
+
+
+
+\# ============================================================
+
+\# AUDIT LOG
+
+\# ============================================================
+
+
+
+def add\_audit(role, record\_id, hash\_status, signature\_status, access):
+
+
+
+&#x20;   logs = load\_json(AUDIT\_FILE, \[])
+
+
+
+&#x20;   logs.append({
+
+&#x20;       "role": role,
+
+&#x20;       "record\_id": record\_id,
+
+&#x20;       "hash\_status": hash\_status,
+
+&#x20;       "signature\_status": signature\_status,
+
+&#x20;       "access\_status": access,
+
+&#x20;       "timestamp": timestamp()
+
+&#x20;   })
+
+
+
+&#x20;   save\_json(AUDIT\_FILE, logs)
+
+
+
+
+
+\# ============================================================
+
+\# CLIENT
+
+\# ============================================================
+
+
+
+def client\_menu():
+
+
+
+&#x20;   records = load\_json(RECORD\_FILE, \[])
+
+
+
+&#x20;   while True:
+
+
+
+&#x20;       print("\\n========== CLIENT ==========")
+
+&#x20;       print("1. Create secure record")
+
+&#x20;       print("2. View stored encrypted records")
+
+&#x20;       print("3. View ElGamal public key")
+
+&#x20;       print("4. Back")
+
+
+
+&#x20;       choice = input("Choice: ")
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # CREATE RECORD
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       if choice == "1":
+
+
+
+&#x20;           record\_id = input("Record ID: ")
+
+
+
+&#x20;           if any(r\["id"] == record\_id for r in records):
+
+&#x20;               print("Record ID already exists.")
+
+&#x20;               continue
+
+
+
+&#x20;           plaintext = input(
+
+&#x20;               "Enter confidential record: "
+
+&#x20;           ).encode()
+
+
+
+&#x20;           des\_key = input(
+
+&#x20;               "DES key (exactly 8 bytes): "
+
+&#x20;           ).encode()
+
+
+
+&#x20;           if len(des\_key) != 8:
+
+&#x20;               print("DES key must be exactly 8 bytes.")
+
+&#x20;               continue
+
+
+
+&#x20;           # Generate random IV
+
+&#x20;           iv = get\_random\_bytes(8)
+
+
+
+&#x20;           # DES-CBC encryption
+
+&#x20;           ciphertext = DES.new(
+
+&#x20;               des\_key,
+
+&#x20;               DES.MODE\_CBC,
+
+&#x20;               iv
+
+&#x20;           ).encrypt(
+
+&#x20;               pad(plaintext, DES.block\_size)
+
+&#x20;           )
+
+
+
+&#x20;           # SHA-256(ciphertext)
+
+&#x20;           h = SHA256.new(ciphertext).hexdigest()
+
+
+
+&#x20;           # ElGamal signature over ciphertext hash/data
+
+&#x20;           r, s = elgamal\_sign(ciphertext)
+
+
+
+&#x20;           time = timestamp()
+
+
+
+&#x20;           record = {
+
+&#x20;               "id": record\_id,
+
+
+
+&#x20;               "ciphertext":
+
+&#x20;                   ciphertext.hex(),
+
+
+
+&#x20;               "iv":
+
+&#x20;                   iv.hex(),
+
+
+
+&#x20;               "hash":
+
+&#x20;                   h,
+
+
+
+&#x20;               "signature": {
+
+&#x20;                   "r": r,
+
+&#x20;                   "s": s
+
+&#x20;               },
+
+
+
+&#x20;               "timestamp":
+
+&#x20;                   time
+
+&#x20;           }
+
+
+
+&#x20;           records.append(record)
+
+&#x20;           save\_json(RECORD\_FILE, records)
+
+
+
+&#x20;           print("\\n===== SECURITY INFORMATION =====")
+
+&#x20;           print("Record ID:", record\_id)
+
+&#x20;           print("Ciphertext:", ciphertext.hex())
+
+&#x20;           print("IV:", iv.hex())
+
+&#x20;           print("SHA-256:", h)
+
+&#x20;           print("ElGamal Signature:", (r, s))
+
+&#x20;           print("Timestamp:", time)
+
+
+
+&#x20;           print("\\nRecord securely stored.")
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # VIEW ENCRYPTED RECORDS
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       elif choice == "2":
+
+
+
+&#x20;           if not records:
+
+&#x20;               print("No records available.")
+
+&#x20;               continue
+
+
+
+&#x20;           for r in records:
+
+
+
+&#x20;               print("\\n----------------------------")
+
+&#x20;               print("Record ID:", r\["id"])
+
+&#x20;               print("Ciphertext:", r\["ciphertext"])
+
+&#x20;               print("IV:", r\["iv"])
+
+&#x20;               print("SHA-256:", r\["hash"])
+
+
+
+&#x20;               print(
+
+&#x20;                   "Signature:",
+
+&#x20;                   (
+
+&#x20;                       r\["signature"]\["r"],
+
+&#x20;                       r\["signature"]\["s"]
+
+&#x20;                   )
+
+&#x20;               )
+
+
+
+&#x20;               print("Timestamp:", r\["timestamp"])
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # PUBLIC KEY
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       elif choice == "3":
+
+
+
+&#x20;           public = load\_json(
+
+&#x20;               PUBLIC\_KEY\_FILE,
+
+&#x20;               {}
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "Client ElGamal Public Key:",
+
+&#x20;               (
+
+&#x20;                   public\["p"],
+
+&#x20;                   public\["g"],
+
+&#x20;                   public\["y"]
+
+&#x20;               )
+
+&#x20;           )
+
+
+
+&#x20;       elif choice == "4":
+
+&#x20;           break
+
+
+
+&#x20;       else:
+
+&#x20;           print("Invalid choice.")
+
+
+
+
+
+\# ============================================================
+
+\# LAWYER
+
+\# ============================================================
+
+
+
+def lawyer\_menu():
+
+
+
+&#x20;   records = load\_json(RECORD\_FILE, \[])
+
+
+
+&#x20;   while True:
+
+
+
+&#x20;       print("\\n========== LAWYER ==========")
+
+&#x20;       print("1. View encrypted records")
+
+&#x20;       print("2. Verify and decrypt record")
+
+&#x20;       print("3. Back")
+
+
+
+&#x20;       choice = input("Choice: ")
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # VIEW SECURITY METADATA
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       if choice == "1":
+
+
+
+&#x20;           if not records:
+
+&#x20;               print("No records available.")
+
+&#x20;               continue
+
+
+
+&#x20;           for r in records:
+
+
+
+&#x20;               print("\\nRecord ID:", r\["id"])
+
+&#x20;               print("Ciphertext:", r\["ciphertext"])
+
+&#x20;               print("IV:", r\["iv"])
+
+&#x20;               print("SHA-256:", r\["hash"])
+
+
+
+&#x20;               print(
+
+&#x20;                   "ElGamal Signature:",
+
+&#x20;                   (
+
+&#x20;                       r\["signature"]\["r"],
+
+&#x20;                       r\["signature"]\["s"]
+
+&#x20;                   )
+
+&#x20;               )
+
+
+
+&#x20;               print("Timestamp:", r\["timestamp"])
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # VERIFY -> THEN DECRYPT
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       elif choice == "2":
+
+
+
+&#x20;           record = get\_record(records)
+
+
+
+&#x20;           if not record:
+
+&#x20;               continue
+
+
+
+&#x20;           hash\_valid, signature\_valid = verify\_record(
+
+&#x20;               record
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "\\nSHA-256 Verification:",
+
+&#x20;               "VALID" if hash\_valid else "INVALID"
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "ElGamal Signature:",
+
+&#x20;               "VALID" if signature\_valid else "INVALID"
+
+&#x20;           )
+
+
+
+&#x20;           # ------------------------------------------------
+
+&#x20;           # BOTH MUST PASS BEFORE DECRYPTION
+
+&#x20;           # ------------------------------------------------
+
+
+
+&#x20;           if hash\_valid and signature\_valid:
+
+
+
+&#x20;               des\_key = input(
+
+&#x20;                   "Enter shared DES key: "
+
+&#x20;               ).encode()
+
+
+
+&#x20;               if len(des\_key) != 8:
+
+
+
+&#x20;                   print(
+
+&#x20;                       "DES key must be exactly 8 bytes."
+
+&#x20;                   )
+
+
+
+&#x20;                   continue
+
+
+
+&#x20;               ciphertext = bytes.fromhex(
+
+&#x20;                   record\["ciphertext"]
+
+&#x20;               )
+
+
+
+&#x20;               iv = bytes.fromhex(
+
+&#x20;                   record\["iv"]
+
+&#x20;               )
+
+
+
+&#x20;               try:
+
+
+
+&#x20;                   plaintext = unpad(
+
+
+
+&#x20;                       DES.new(
+
+&#x20;                           des\_key,
+
+&#x20;                           DES.MODE\_CBC,
+
+&#x20;                           iv
+
+&#x20;                       ).decrypt(ciphertext),
+
+
+
+&#x20;                       DES.block\_size
+
+&#x20;                   )
+
+
+
+&#x20;                   print(
+
+&#x20;                       "\\nRecovered plaintext record:"
+
+&#x20;                   )
+
+
+
+&#x20;                   print(
+
+&#x20;                       plaintext.decode()
+
+&#x20;                   )
+
+
+
+&#x20;                   add\_audit(
+
+&#x20;                       "Lawyer",
+
+&#x20;                       record\["id"],
+
+&#x20;                       "VALID",
+
+&#x20;                       "VALID",
+
+&#x20;                       "PLAINTEXT ACCESSED"
+
+&#x20;                   )
+
+
+
+&#x20;               except (
+
+&#x20;                   ValueError,
+
+&#x20;                   UnicodeDecodeError
+
+&#x20;               ):
+
+
+
+&#x20;                   print(
+
+&#x20;                       "Incorrect DES key or corrupted data."
+
+&#x20;                   )
+
+
+
+&#x20;                   add\_audit(
+
+&#x20;                       "Lawyer",
+
+&#x20;                       record\["id"],
+
+&#x20;                       "VALID",
+
+&#x20;                       "VALID",
+
+&#x20;                       "DECRYPTION FAILED"
+
+&#x20;                   )
+
+
+
+&#x20;           else:
+
+
+
+&#x20;               print(
+
+&#x20;                   "\\nVerification failed."
+
+&#x20;               )
+
+
+
+&#x20;               print(
+
+&#x20;                   "Plaintext access DENIED."
+
+&#x20;               )
+
+
+
+&#x20;               print(
+
+&#x20;                   "Decryption NOT performed."
+
+&#x20;               )
+
+
+
+&#x20;               add\_audit(
+
+&#x20;                   "Lawyer",
+
+&#x20;                   record\["id"],
+
+
+
+&#x20;                   "VALID"
+
+&#x20;                   if hash\_valid
+
+&#x20;                   else "INVALID",
+
+
+
+&#x20;                   "VALID"
+
+&#x20;                   if signature\_valid
+
+&#x20;                   else "INVALID",
+
+
+
+&#x20;                   "ACCESS DENIED"
+
+&#x20;               )
+
+
+
+&#x20;       elif choice == "3":
+
+&#x20;           break
+
+
+
+&#x20;       else:
+
+&#x20;           print("Invalid choice.")
+
+
+
+
+
+\# ============================================================
+
+\# COMPLIANCE OFFICER
+
+\# ============================================================
+
+
+
+def compliance\_menu():
+
+
+
+&#x20;   records = load\_json(RECORD\_FILE, \[])
+
+
+
+&#x20;   while True:
+
+
+
+&#x20;       print(
+
+&#x20;           "\\n====== COMPLIANCE OFFICER ======"
+
+&#x20;       )
+
+
+
+&#x20;       print("1. View encrypted records")
+
+&#x20;       print("2. Audit record")
+
+&#x20;       print("3. View audit log")
+
+&#x20;       print("4. Back")
+
+
+
+&#x20;       choice = input("Choice: ")
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # ENCRYPTED METADATA ONLY
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       if choice == "1":
+
+
+
+&#x20;           if not records:
+
+&#x20;               print("No records available.")
+
+&#x20;               continue
+
+
+
+&#x20;           for r in records:
+
+
+
+&#x20;               print("\\nRecord ID:", r\["id"])
+
+&#x20;               print(
+
+&#x20;                   "Ciphertext:",
+
+&#x20;                   r\["ciphertext"]
+
+&#x20;               )
+
+&#x20;               print("IV:", r\["iv"])
+
+&#x20;               print("SHA-256:", r\["hash"])
+
+
+
+&#x20;               print(
+
+&#x20;                   "Signature:",
+
+&#x20;                   (
+
+&#x20;                       r\["signature"]\["r"],
+
+&#x20;                       r\["signature"]\["s"]
+
+&#x20;                   )
+
+&#x20;               )
+
+
+
+&#x20;               print(
+
+&#x20;                   "Timestamp:",
+
+&#x20;                   r\["timestamp"]
+
+&#x20;               )
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # VERIFY + GENERATE REPORT
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       elif choice == "2":
+
+
+
+&#x20;           record = get\_record(records)
+
+
+
+&#x20;           if not record:
+
+&#x20;               continue
+
+
+
+&#x20;           hash\_valid, signature\_valid = verify\_record(
+
+&#x20;               record
+
+&#x20;           )
+
+
+
+&#x20;           hash\_status = (
+
+&#x20;               "VALID"
+
+&#x20;               if hash\_valid
+
+&#x20;               else "INVALID"
+
+&#x20;           )
+
+
+
+&#x20;           signature\_status = (
+
+&#x20;               "VALID"
+
+&#x20;               if signature\_valid
+
+&#x20;               else "INVALID"
+
+&#x20;           )
+
+
+
+&#x20;           audit\_time = timestamp()
+
+
+
+&#x20;           print(
+
+&#x20;               "\\nSHA-256 Verification:",
+
+&#x20;               hash\_status
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "ElGamal Signature:",
+
+&#x20;               signature\_status
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "Audit timestamp:",
+
+&#x20;               audit\_time
+
+&#x20;           )
+
+
+
+&#x20;           # ------------------------------------------------
+
+&#x20;           # Compliance officer NEVER decrypts
+
+&#x20;           # ------------------------------------------------
+
+
+
+&#x20;           report = {
+
+&#x20;               "application":
+
+&#x20;                   "SecureVault",
+
+
+
+&#x20;               "record\_id":
+
+&#x20;                   record\["id"],
+
+
+
+&#x20;               "original\_record\_timestamp":
+
+&#x20;                   record\["timestamp"],
+
+
+
+&#x20;               "stored\_sha256":
+
+&#x20;                   record\["hash"],
+
+
+
+&#x20;               "iv":
+
+&#x20;                   record\["iv"],
+
+
+
+&#x20;               "ciphertext\_length\_bytes":
+
+&#x20;                   len(
+
+&#x20;                       bytes.fromhex(
+
+&#x20;                           record\["ciphertext"]
+
+&#x20;                       )
+
+&#x20;                   ),
+
+
+
+&#x20;               "elgamal\_signature":
+
+&#x20;                   record\["signature"],
+
+
+
+&#x20;               "hash\_verification":
+
+&#x20;                   hash\_status,
+
+
+
+&#x20;               "signature\_verification":
+
+&#x20;                   signature\_status,
+
+
+
+&#x20;               "plaintext\_access":
+
+&#x20;                   "NOT PERMITTED",
+
+
+
+&#x20;               "audit\_timestamp":
+
+&#x20;                   audit\_time
+
+&#x20;           }
+
+
+
+&#x20;           report\_file = (
+
+&#x20;               "compliance\_report\_"
+
+&#x20;               + record\["id"]
+
+&#x20;               + ".json"
+
+&#x20;           )
+
+
+
+&#x20;           save\_json(
+
+&#x20;               report\_file,
+
+&#x20;               report
+
+&#x20;           )
+
+
+
+&#x20;           print(
+
+&#x20;               "Compliance report generated:",
+
+&#x20;               report\_file
+
+&#x20;           )
+
+
+
+&#x20;           add\_audit(
+
+&#x20;               "Compliance Officer",
+
+&#x20;               record\["id"],
+
+&#x20;               hash\_status,
+
+&#x20;               signature\_status,
+
+&#x20;               "AUDIT ONLY - NO PLAINTEXT"
+
+&#x20;           )
+
+
+
+&#x20;       # ----------------------------------------------------
+
+&#x20;       # AUDIT LOG
+
+&#x20;       # ----------------------------------------------------
+
+
+
+&#x20;       elif choice == "3":
+
+
+
+&#x20;           logs = load\_json(
+
+&#x20;               AUDIT\_FILE,
+
+&#x20;               \[]
+
+&#x20;           )
+
+
+
+&#x20;           if not logs:
+
+&#x20;               print("No audit entries.")
+
+&#x20;               continue
+
+
+
+&#x20;           for log in logs:
+
+
+
+&#x20;               print("\\n-------------------")
+
+
+
+&#x20;               for k, v in log.items():
+
+&#x20;                   print(f"{k}: {v}")
+
+
+
+&#x20;       elif choice == "4":
+
+&#x20;           break
+
+
+
+&#x20;       else:
+
+&#x20;           print("Invalid choice.")
+
+
+
+
+
+\# ============================================================
+
+\# MAIN RBAC MENU
+
+\# ============================================================
+
 
 
 def main():
-    ensure\_keys()
-    records = load\_records()
 
-    while True:
-        print("\\n=== HealthSecure ===")
-        print("1. Doctor")
-        print("2. Nurse")
-        print("3. Admin")
-        print("4. Exit")
-        ch = input("Choice: ")
 
-        if ch == "1":
-            doctor\_menu(records)
-        elif ch == "2":
-            nurse\_menu(records)
-        elif ch == "3":
-            admin\_menu(records)
-        elif ch == "4":
-            break
-        else:
-            print("Invalid choice.")
+
+&#x20;   ensure\_keys()
+
+
+
+&#x20;   while True:
+
+
+
+&#x20;       print("\\n================================")
+
+&#x20;       print("          SECUREVAULT")
+
+&#x20;       print("================================")
+
+
+
+&#x20;       print("1. Client")
+
+&#x20;       print("2. Lawyer")
+
+&#x20;       print("3. Compliance Officer")
+
+&#x20;       print("4. Exit")
+
+
+
+&#x20;       choice = input("Select role: ")
+
+
+
+&#x20;       if choice == "1":
+
+&#x20;           client\_menu()
+
+
+
+&#x20;       elif choice == "2":
+
+&#x20;           lawyer\_menu()
+
+
+
+&#x20;       elif choice == "3":
+
+&#x20;           compliance\_menu()
+
+
+
+&#x20;       elif choice == "4":
+
+&#x20;           break
+
+
+
+&#x20;       else:
+
+&#x20;           print("Invalid choice.")
+
+
+
 
 
 if \_\_name\_\_ == "\_\_main\_\_":
-    main()
 
-```
-
-\---
-
-# Question 2 — HealthSecure
+&#x20;   main()Question 2 — HealthSecure
 
 ## Question summary
 
