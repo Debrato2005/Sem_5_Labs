@@ -1,0 +1,216 @@
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto.PublicKey import RSA
+from Crypto.Hash import MD5
+from Crypto.Signature import pkcs1_15
+import hashlib
+import json
+from datetime import datetime
+
+DB = "student.json"
+PRIV = "student_private.pem"
+PUB = "student_public.pem"
+
+def generate_keys():
+    key = RSA.generate(2048)
+    open(PRIV, "wb").write(key.export_key())
+    open(PUB, "wb").write(key.publickey().export_key())
+    print(" RSA key pair generated.")
+
+def ensure_keys():
+    try:
+        open(PRIV, "rb").close()
+        open(PUB, "rb").close()
+    except FileNotFoundError:
+        generate_keys()
+
+def load_records():
+    try:
+        return json.load(open(DB))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+def save_records(records):
+    json.dump(records, open(DB, "w"), indent=2)
+
+def get_record(records):
+    rid = input("Record ID: ")
+    for r in records:
+        if r["id"] == rid:
+            return r
+    print("Record not found.")
+    return None
+
+def rsa_encrypt_chunks(pub, data):
+    size = pub.size_in_bytes() - 2 * MD5.digest_size - 2
+    return [
+        PKCS1_OAEP.new(pub, hashAlgo=MD5).encrypt(data [i:i + size])
+        for i in range(0, len(data), size)
+    ]
+
+def rsa_decrypt_chunks(priv, chunks):
+    return b"".join(
+        PKCS1_OAEP.new(priv, hashAlgo=MD5).decrypt(c)
+        for c in chunks
+    )
+
+def verify_record(record, pub):
+    chunks =[bytes.fromhex(x) for x in record["ciphertext"]]
+    encrypted_data = b"".join(chunks)
+    current_hash = hashlib.md5(encrypted_data).hexdigest()
+    #MD5.new(encrypted_data).hexdigest()
+    # hashlib.md5(msg).hexdigest()
+    # hashlib.sha256(msg).hexdigest()
+    integrity_ok = current_hash == record["hash"]
+    try:
+        pkcs1_15.new(pub).verify(
+            MD5.new(encrypted_data),
+            bytes.fromhex(record["signature"])
+        )
+        signature_ok = True
+    except (ValueError, TypeError):
+        signature_ok = False
+    return integrity_ok, signature_ok, chunks
+
+def student_menu(records):
+    while True:
+        print("--- STUDENT ---")
+        print("1. Generate new RSA key pair")
+        print("2. Add record")
+        print("3. Back")
+        ch = input("Choice: ")
+
+        if ch == "1":
+            if records:
+                print("Keys not regenerated because existing records depend on the current key pair.")
+            else:
+                generate_keys()
+
+        elif ch == "2":
+            rid = input("Qn ID: ")
+            if any(r["id"] == rid for r in records):
+                print("Record ID already exists.")
+                continue
+
+            student = {
+                "exam": input("exam: "),
+                "ans": input("ans: "),
+            }
+            data = json.dumps(student).encode()
+            priv = RSA.import_key(open(PRIV, "rb").read())
+            pub = priv.publickey()
+            chunks = rsa_encrypt_chunks(pub, data)
+            encrypted_data = b"".join(chunks)
+            h = MD5.new(encrypted_data)
+            signature = pkcs1_15.new(priv).sign(h)
+            record = {
+                "id": rid,
+                "ciphertext": [c.hex() for c in chunks],
+                "hash": h.hexdigest(),
+                "signature": signature.hex(),
+                "timestamp": datetime.now().isoformat(timespec="seconds")
+            }
+            records.append(record)
+            save_records(records)
+            print("Encrypted STUDENT record stored.")
+            print()
+        elif ch == "3":
+            break
+
+        else:
+            print("Invalid choice.")
+
+def professor_menu(records):
+    while True:
+        print("--- PROFESSOR ---")
+        print("1. View stored student records")
+        print("2. Verify and decrypt a record and Store grade")
+        print("3. Back")
+        ch = input("Choice: ")
+
+        if ch == "1":
+            if not records:
+                print("No records.")
+            for r in records:
+                print("Record ID:", r["id"])
+                print("Encrypted data:", r["ciphertext"])
+                print("SHA-256:", r["hash"])
+                print("Signature:", r["signature"])
+                print("Timestamp:", r["timestamp"])
+
+        elif ch == "2":
+            r = get_record(records)
+            if not r:
+                continue
+
+            pub = RSA.import_key(open(PUB, "rb").read())
+            integrity_ok, signature_ok, chunks = verify_record(r, pub)
+            print("Integrity:", "VALID" if integrity_ok else "INVALID")
+            print("Signature:", "VALID" if signature_ok else "INVALID")
+
+            if integrity_ok and signature_ok:
+                priv = RSA.import_key(open(PRIV, "rb").read())
+                plaintext = rsa_decrypt_chunks(priv, chunks)
+                student = json.loads(plaintext.decode())
+                grade = input("enter grade: ")
+                print("Decrypted student information:")
+                for k, v in student.items():
+                    print(f"{k}: {v}")
+
+            else:
+                print("Verification failed. Decryption not performed.")
+
+        elif ch=="3":
+            break
+        else:
+            print("Invalid choice.")
+
+def acad_menu(records):
+    pub = RSA.import_key(open(PUB, "rb").read())
+
+    while True:
+        print("\--- ACADEMIC ---")
+        print("1. View permitted record details")
+        print("2. Back")
+        ch = input("Choice: ")
+
+        if ch == "1":
+            if not records:
+                print("No records.")
+            for r in records:
+                print("\Record ID:", r["id"])
+                print("SHA-256:", r["hash"])
+                print("Timestamp:", r["timestamp"])
+
+
+        elif ch == "2":
+            break
+
+        else:
+            print("Invalid choice.")
+
+def main():
+    ensure_keys()
+    records = load_records()
+
+    while True:
+        print("\=== UNIVERSITY ===")
+        print("1. student")
+        print("2. professor")
+        print("3. acad")
+        print("4. Exit")
+        ch = input("Choice: ")
+
+        if ch == "1":
+            student_menu(records)
+        elif ch == "2":
+            professor_menu(records)
+        elif ch == "3":
+            acad_menu(records)
+        elif ch == "4":
+            break
+        else:
+            print("Invalid choice.")
+
+
+if __name__ == "__main__":
+    main()
