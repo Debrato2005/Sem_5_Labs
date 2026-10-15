@@ -1,42 +1,42 @@
 # IS Midsem Scenario Programming Guide
 
-This file is a **scenario-construction guide** for the `Sem_5_Labs/Debrato_240911734_IS/midsems` material.
+This file is a **scenario-construction guide** for the `Sem\_5\_Labs/Debrato\_240911734\_IS/midsems` material.
 
 It is intended for questions that combine multiple lab components into one program, such as:
 
-- hospital / healthcare record systems
-- AES + RSA + ElGamal hybrid security
-- SHA-256 integrity verification
-- RSA digital signatures
-- RBAC roles such as Doctor / Nurse / Admin
-- file storage and timestamps
-- tampering demonstrations
-- "verify first, decrypt only if valid" flows
+* hospital / healthcare record systems
+* AES + RSA + ElGamal hybrid security
+* SHA-256 integrity verification
+* RSA digital signatures
+* RBAC roles such as Doctor / Nurse / Admin
+* file storage and timestamps
+* tampering demonstrations
+* "verify first, decrypt only if valid" flows
 
 The main exam skill is **not writing a new cryptosystem from scratch**. It is recognizing the required components and assembling the correct blocks in the correct order.
 
----
+\---
 
-# 1. Where each component already exists in the GitHub `midsems` folder
+# 1\. Where each component already exists in the GitHub `midsems` folder
 
-| Requirement in a scenario | Main source file |
-|---|---|
-| AES / DES / 3DES, CBC/ECB/CTR, IV, padding | `Lab_2_Advanced_Symmetric_Key_Ciphers.md` |
-| RSA encryption/decryption, OAEP, key generation | `Lab_3_Asymmetric_Key_Ciphers.md` |
-| ElGamal encryption/decryption formulas | `Lab_3_Asymmetric_Key_Ciphers.md` |
-| Hybrid RSA + symmetric encryption concepts | `Lab_3_Asymmetric_Key_Ciphers.md` |
-| Key management, timestamps, logs | `Lab_4_Advanced_Asymmetric_Key_Cryptography (1).md` |
-| RBAC / access restrictions | `Lab_4_Advanced_Asymmetric_Key_Cryptography (1).md` |
-| SHA-256 and file integrity comparison | `Lab_5_Hashing.md` |
-| RSA digital signatures and verification | `Lab_6_Digital_Signatures.md` |
-| Tampering + verify-before-decrypt pattern | `Lab_6_Digital_Signatures.md` |
-| Common imports / exam-generation prompts | `download.md` |
+|Requirement in a scenario|Main source file|
+|-|-|
+|AES / DES / 3DES, CBC/ECB/CTR, IV, padding|`Lab\_2\_Advanced\_Symmetric\_Key\_Ciphers.md`|
+|RSA encryption/decryption, OAEP, key generation|`Lab\_3\_Asymmetric\_Key\_Ciphers.md`|
+|ElGamal encryption/decryption formulas|`Lab\_3\_Asymmetric\_Key\_Ciphers.md`|
+|Hybrid RSA + symmetric encryption concepts|`Lab\_3\_Asymmetric\_Key\_Ciphers.md`|
+|Key management, timestamps, logs|`Lab\_4\_Advanced\_Asymmetric\_Key\_Cryptography (1).md`|
+|RBAC / access restrictions|`Lab\_4\_Advanced\_Asymmetric\_Key\_Cryptography (1).md`|
+|SHA-256 and file integrity comparison|`Lab\_5\_Hashing.md`|
+|RSA digital signatures and verification|`Lab\_6\_Digital\_Signatures.md`|
+|Tampering + verify-before-decrypt pattern|`Lab\_6\_Digital\_Signatures.md`|
+|Common imports / exam-generation prompts|`download.md`|
 
 The lab manual itself explicitly warns that exam questions may be **variations and combinations** of the individual lab exercises. Therefore these scenario questions should be treated as compositions of the already-covered components.
 
----
+\---
 
-# 2. First decode the question into security operations
+# 2\. First decode the question into security operations
 
 Before writing code, rewrite the question into an execution sequence.
 
@@ -89,19 +89,19 @@ ElGamal encryption
 
 This sequencing is often more important than the individual code blocks.
 
----
+\---
 
-# 3. Core imports
+# 3\. Core imports
 
 Use only what the question needs.
 
 ```python
-from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Cipher import AES, PKCS1\_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Util.Padding import pad, unpad
-from Crypto.Random import get_random_bytes
+from Crypto.Random import get\_random\_bytes
 
 from datetime import datetime
 import hashlib
@@ -112,17 +112,17 @@ from math import gcd
 Do **not** use obsolete APIs such as:
 
 ```python
-RSA_key.encrypt(...)
-RSA_key.decrypt(...)
+RSA\_key.encrypt(...)
+RSA\_key.decrypt(...)
 ElGamal.encrypt(...)
 ElGamal.decrypt(...)
 ```
 
-Use `PKCS1_OAEP` for RSA encryption/decryption and textbook `pow()` formulas for ElGamal.
+Use `PKCS1\_OAEP` for RSA encryption/decryption and textbook `pow()` formulas for ElGamal.
 
----
+\---
 
-# 4. Universal data conversions
+# 4\. Universal data conversions
 
 Most crypto bugs in the exam come from mixing `str`, `bytes`, hex strings and integers.
 
@@ -150,14 +150,14 @@ record = {
 When reading:
 
 ```python
-ct = bytes.fromhex(record["ciphertext"])
-iv = bytes.fromhex(record["iv"])
-sig = bytes.fromhex(record["signature"])
+ct = bytes.fromhex(record\["ciphertext"])
+iv = bytes.fromhex(record\["iv"])
+sig = bytes.fromhex(record\["signature"])
 ```
 
----
+\---
 
-# 5. Timestamp component
+# 5\. Timestamp component
 
 ```python
 from datetime import datetime
@@ -168,9 +168,9 @@ print(timestamp)
 
 Store this with every record or verification event when the scenario asks for timestamps.
 
----
+\---
 
-# 6. Simple file handling
+# 6\. Simple file handling
 
 ## Read plaintext file
 
@@ -197,7 +197,7 @@ open("message.txt", "w").write(input("Content: "))
 try:
     records = json.load(open("records.json"))
 except (FileNotFoundError, json.JSONDecodeError):
-    records = []
+    records = \[]
 ```
 
 ## Save JSON records
@@ -206,9 +206,9 @@ except (FileNotFoundError, json.JSONDecodeError):
 json.dump(records, open("records.json", "w"), indent=2)
 ```
 
----
+\---
 
-# 7. AES-128 CBC component
+# 7\. AES-128 CBC component
 
 Use this when a scenario asks for AES-128 and an IV.
 
@@ -229,10 +229,10 @@ if len(iv) != 16:
 
 data = input("Plaintext: ").encode()
 
-ct = AES.new(key, AES.MODE_CBC, iv).encrypt(pad(data, 16))
+ct = AES.new(key, AES.MODE\_CBC, iv).encrypt(pad(data, 16))
 
 pt = unpad(
-    AES.new(key, AES.MODE_CBC, iv).decrypt(ct),
+    AES.new(key, AES.MODE\_CBC, iv).decrypt(ct),
     16
 )
 
@@ -243,21 +243,21 @@ print("Decrypted:", pt.decode())
 If the IV is supposed to be generated:
 
 ```python
-iv = get_random_bytes(16)
+iv = get\_random\_bytes(16)
 ```
 
 Never reuse a fixed IV in a real system, but follow the exam wording if the IV is explicitly supplied.
 
----
+\---
 
-# 8. AES file encryption component
+# 8\. AES file encryption component
 
 ```python
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
 src = input("Source file: ")
-enc_file = input("Encrypted output file: ")
+enc\_file = input("Encrypted output file: ")
 
 key = input("AES-128 key (16 chars): ").encode()
 iv = input("IV (16 chars): ").encode()
@@ -267,18 +267,18 @@ if len(key) != 16 or len(iv) != 16:
 
 data = open(src, "rb").read()
 
-ct = AES.new(key, AES.MODE_CBC, iv).encrypt(pad(data, 16))
-open(enc_file, "wb").write(ct)
+ct = AES.new(key, AES.MODE\_CBC, iv).encrypt(pad(data, 16))
+open(enc\_file, "wb").write(ct)
 
 recovered = unpad(
-    AES.new(key, AES.MODE_CBC, iv).decrypt(ct),
+    AES.new(key, AES.MODE\_CBC, iv).decrypt(ct),
     16
 )
 ```
 
----
+\---
 
-# 9. SHA-256 component
+# 9\. SHA-256 component
 
 ## Using hashlib
 
@@ -308,17 +308,17 @@ h = SHA256.new(ciphertext)
 
 If the question says **hash the encrypted message**, do not hash the plaintext.
 
----
+\---
 
-# 10. Sender / receiver integrity comparison
+# 10\. Sender / receiver integrity comparison
 
 ```python
-sender_hash = hashlib.sha256(ct).hexdigest()
+sender\_hash = hashlib.sha256(ct).hexdigest()
 
-received_ct = ct
-receiver_hash = hashlib.sha256(received_ct).hexdigest()
+received\_ct = ct
+receiver\_hash = hashlib.sha256(received\_ct).hexdigest()
 
-if sender_hash == receiver_hash:
+if sender\_hash == receiver\_hash:
     print("Integrity verified")
 else:
     print("Integrity failed")
@@ -336,65 +336,65 @@ decrypt
 
 If the question explicitly says not to decrypt after failure, the decryption code must be inside the success branch.
 
----
+\---
 
-# 11. Tampering component
+# 11\. Tampering component
 
 Modify one byte of the ciphertext:
 
 ```python
 tampered = bytearray(ct)
-tampered[0] ^= 1
+tampered\[0] ^= 1
 tampered = bytes(tampered)
 ```
 
 Then:
 
 ```python
-tampered_hash = hashlib.sha256(tampered).hexdigest()
+tampered\_hash = hashlib.sha256(tampered).hexdigest()
 
-if tampered_hash != sender_hash:
+if tampered\_hash != sender\_hash:
     print("Integrity failed - ciphertext was modified")
 ```
 
 This is safer than trying to modify a printable hex character and then accidentally producing malformed data.
 
----
+\---
 
-# 12. RSA key generation
+# 12\. RSA key generation
 
 ```python
 from Crypto.PublicKey import RSA
 
 key = RSA.generate(2048)
-public_key = key.publickey()
+public\_key = key.publickey()
 
-print(public_key.export_key().decode())
+print(public\_key.export\_key().decode())
 ```
 
 Save keys if required:
 
 ```python
-open("doctor_private.pem", "wb").write(key.export_key())
-open("doctor_public.pem", "wb").write(public_key.export_key())
+open("doctor\_private.pem", "wb").write(key.export\_key())
+open("doctor\_public.pem", "wb").write(public\_key.export\_key())
 ```
 
 Load them:
 
 ```python
-private_key = RSA.import_key(open("doctor_private.pem", "rb").read())
-public_key = RSA.import_key(open("doctor_public.pem", "rb").read())
+private\_key = RSA.import\_key(open("doctor\_private.pem", "rb").read())
+public\_key = RSA.import\_key(open("doctor\_public.pem", "rb").read())
 ```
 
----
+\---
 
-# 13. RSA OAEP encryption/decryption
+# 13\. RSA OAEP encryption/decryption
 
 ```python
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import PKCS1\_OAEP
 
-ct = PKCS1_OAEP.new(public_key).encrypt(data)
-pt = PKCS1_OAEP.new(private_key).decrypt(ct)
+ct = PKCS1\_OAEP.new(public\_key).encrypt(data)
+pt = PKCS1\_OAEP.new(private\_key).decrypt(ct)
 ```
 
 Rule:
@@ -411,30 +411,30 @@ AES encrypts data
 RSA encrypts AES key
 ```
 
----
+\---
 
-# 14. RSA encrypt the AES key
+# 14\. RSA encrypt the AES key
 
 This is the correct block for the AES + RSA hybrid hospital question.
 
 ```python
 rsa = RSA.generate(2048)
-rsa_public = rsa.publickey()
+rsa\_public = rsa.publickey()
 
-encrypted_aes_key = PKCS1_OAEP.new(rsa_public).encrypt(aes_key)
+encrypted\_aes\_key = PKCS1\_OAEP.new(rsa\_public).encrypt(aes\_key)
 
-open("encrypted_aes_key.bin", "wb").write(encrypted_aes_key)
+open("encrypted\_aes\_key.bin", "wb").write(encrypted\_aes\_key)
 ```
 
 Recover:
 
 ```python
-aes_key = PKCS1_OAEP.new(rsa).decrypt(encrypted_aes_key)
+aes\_key = PKCS1\_OAEP.new(rsa).decrypt(encrypted\_aes\_key)
 ```
 
----
+\---
 
-# 15. RSA digital signature
+# 15\. RSA digital signature
 
 Rule:
 
@@ -447,40 +447,40 @@ Sign the ciphertext hash:
 
 ```python
 h = SHA256.new(ct)
-signature = pkcs1_15.new(private_key).sign(h)
+signature = pkcs1\_15.new(private\_key).sign(h)
 ```
 
 Verify:
 
 ```python
 try:
-    pkcs1_15.new(public_key).verify(SHA256.new(ct), signature)
-    signature_ok = True
+    pkcs1\_15.new(public\_key).verify(SHA256.new(ct), signature)
+    signature\_ok = True
 except (ValueError, TypeError):
-    signature_ok = False
+    signature\_ok = False
 ```
 
 Do not manually "decrypt a signature" when PyCryptodome signature APIs are available.
 
----
+\---
 
-# 16. Combined integrity + authenticity gate
+# 16\. Combined integrity + authenticity gate
 
 This is the most reusable pattern in HealthSecure / MediSecure style questions.
 
 ```python
-stored_hash = SHA256.new(ct).hexdigest()
+stored\_hash = SHA256.new(ct).hexdigest()
 
-current_hash = SHA256.new(ct).hexdigest()
-integrity_ok = current_hash == stored_hash
+current\_hash = SHA256.new(ct).hexdigest()
+integrity\_ok = current\_hash == stored\_hash
 
 try:
-    pkcs1_15.new(public_key).verify(SHA256.new(ct), signature)
-    signature_ok = True
+    pkcs1\_15.new(public\_key).verify(SHA256.new(ct), signature)
+    signature\_ok = True
 except (ValueError, TypeError):
-    signature_ok = False
+    signature\_ok = False
 
-if integrity_ok and signature_ok:
+if integrity\_ok and signature\_ok:
     print("Integrity verified")
     print("Signature valid")
     # decrypt HERE
@@ -491,9 +491,9 @@ else:
 
 This prevents plaintext disclosure before verification succeeds.
 
----
+\---
 
-# 17. ElGamal encryption component
+# 17\. ElGamal encryption component
 
 Your GitHub notes correctly use textbook ElGamal equations because PyCryptodome does not expose a normal high-level ElGamal encrypt/decrypt API.
 
@@ -523,7 +523,7 @@ if not 0 <= m < p:
 y = pow(g, x, p)
 
 c1 = pow(g, k, p)
-c2 = m * pow(y, k, p) % p
+c2 = m \* pow(y, k, p) % p
 
 print("Public key:", (p, g, y))
 print("Encrypted authorization code:", (c1, c2))
@@ -533,15 +533,15 @@ Decryption:
 
 ```python
 s = pow(c1, x, p)
-m2 = c2 * pow(s, -1, p) % p
+m2 = c2 \* pow(s, -1, p) % p
 print("Recovered authorization code:", m2)
 ```
 
 If the examiner gives `(p, g, y)` directly, take those as inputs and do not regenerate them.
 
----
+\---
 
-# 18. RBAC component
+# 18\. RBAC component
 
 The role determines which menu operations are reachable.
 
@@ -565,13 +565,13 @@ else:
 
 For a real scenario program, do not merely print `Access denied`; structure the menus so restricted operations are not offered.
 
----
+\---
 
-# 19. Role-specific menu structure
+# 19\. Role-specific menu structure
 
 ```python
 while True:
-    role = input("\nRole [doctor/nurse/admin/exit]: ").lower()
+    role = input("\\nRole \[doctor/nurse/admin/exit]: ").lower()
 
     if role == "exit":
         break
@@ -595,13 +595,13 @@ while True:
 
 The key security rule is that Nurse/Admin branches should never contain private-key decryption code.
 
----
+\---
 
-# 20. Generic encrypted-record structure
+# 20\. Generic encrypted-record structure
 
 ```python
 record = {
-    "id": record_id,
+    "id": record\_id,
     "ciphertext": ct.hex(),
     "hash": SHA256.new(ct).hexdigest(),
     "signature": signature.hex(),
@@ -618,14 +618,14 @@ For AES scenarios add:
 For hybrid scenarios add:
 
 ```python
-"encrypted_key": encrypted_aes_key.hex()
+"encrypted\_key": encrypted\_aes\_key.hex()
 ```
 
 Never store plaintext in the record when the question says the stored record is encrypted.
 
----
+\---
 
-# 21. HealthSecure construction
+# 21\. HealthSecure construction
 
 Question pattern:
 
@@ -690,7 +690,7 @@ patient = {
     "name": input("Name: "),
     "age": input("Age: "),
     "gender": input("Gender: "),
-    "blood_group": input("Blood group: "),
+    "blood\_group": input("Blood group: "),
     "diagnosis": input("Diagnosis: ")
 }
 
@@ -699,9 +699,9 @@ data = json.dumps(patient).encode()
 
 Important limitation: RSA-OAEP directly encrypts only short messages. If the record becomes large, replace the direct RSA data encryption with AES data encryption + RSA-encrypted AES key.
 
----
+\---
 
-# 22. MediSecure construction
+# 22\. MediSecure construction
 
 Question pattern:
 
@@ -755,9 +755,9 @@ AES decrypt
 
 Do not give the Auditor the AES key.
 
----
+\---
 
-# 23. AES + RSA + ElGamal hospital construction
+# 23\. AES + RSA + ElGamal hospital construction
 
 Question pattern:
 
@@ -821,10 +821,10 @@ AUTHORIZATION CODE
 Verification gate:
 
 ```python
-if sender_hash == receiver_hash:
-    recovered_key = PKCS1_OAEP.new(rsa_private).decrypt(encrypted_aes_key)
+if sender\_hash == receiver\_hash:
+    recovered\_key = PKCS1\_OAEP.new(rsa\_private).decrypt(encrypted\_aes\_key)
     plaintext = unpad(
-        AES.new(recovered_key, AES.MODE_CBC, iv).decrypt(received_ct),
+        AES.new(recovered\_key, AES.MODE\_CBC, iv).decrypt(received\_ct),
         16
     )
     print(plaintext.decode())
@@ -837,16 +837,16 @@ Tamper test:
 
 ```python
 tampered = bytearray(ct)
-tampered[0] ^= 1
+tampered\[0] ^= 1
 tampered = bytes(tampered)
 
-if hashlib.sha256(tampered).hexdigest() != sender_hash:
+if hashlib.sha256(tampered).hexdigest() != sender\_hash:
     print("Integrity failed as expected")
 ```
 
----
+\---
 
-# 24. Master exam assembly template
+# 24\. Master exam assembly template
 
 Use this as a mental template rather than blindly copying it.
 
@@ -896,54 +896,43 @@ Use this as a mental template rather than blindly copying it.
 # 15. tampering test if requested
 ```
 
----
+\---
 
-# 25. Common mistakes that will break these scenario questions
+# 25\. Common mistakes that will break these scenario questions
 
 1. **Signing with the public key.**  
-   Correct: private signs, public verifies.
-
+Correct: private signs, public verifies.
 2. **RSA encrypting with the private key for confidentiality.**  
-   Correct: recipient public encrypts, recipient private decrypts.
-
+Correct: recipient public encrypts, recipient private decrypts.
 3. **Hashing the plaintext when the question says hash ciphertext.**
-
 4. **Decrypting before integrity/signature verification when the question explicitly requires verification first.**
-
 5. **Giving Nurse/Admin/Auditor the private key or plaintext.**
-
-6. **Using `RSA_key.encrypt()` / `RSA_key.decrypt()` instead of OAEP.**
-
+6. **Using `RSA\_key.encrypt()` / `RSA\_key.decrypt()` instead of OAEP.**
 7. **Calling nonexistent ElGamal high-level encryption APIs.**
-
 8. **Wrong AES sizes.**
-   - AES-128 key = 16 bytes
-   - CBC IV = 16 bytes
 
+   * AES-128 key = 16 bytes
+   * CBC IV = 16 bytes
 9. **Forgetting `pad()` / `unpad()` with CBC.**
-
 10. **Trying to JSON-serialize raw bytes.**  
-    Store `.hex()` strings instead.
-
+Store `.hex()` strings instead.
 11. **Changing the encrypted file and then accidentally hashing the original ciphertext instead of the tampered ciphertext.**
-
 12. **Using a broad `except:` for every failure.**  
-    Prefer:
-    ```python
+Prefer:
+
+&#x20;   ```python
     except (ValueError, TypeError):
     ```
 
 13. **Direct RSA encryption of a large file.**  
-    Use RSA only for the symmetric key and AES for the file.
-
+Use RSA only for the symmetric key and AES for the file.
 14. **Storing the AES key in plaintext alongside ciphertext when the question expects RSA key wrapping.**
-
 15. **Putting decryption functions inside Nurse/Admin menus even if they are not called.**  
-    Keep role branches clean and obviously restricted.
+Keep role branches clean and obviously restricted.
 
----
+\---
 
-# 26. Fast question-to-component lookup
+# 26\. Fast question-to-component lookup
 
 If the question says:
 
@@ -954,7 +943,7 @@ If the question says:
 use:
 
 ```python
-AES.new(key, AES.MODE_CBC, iv)
+AES.new(key, AES.MODE\_CBC, iv)
 ```
 
 with a 16-byte key.
@@ -968,7 +957,7 @@ If it says:
 use:
 
 ```python
-PKCS1_OAEP.new(public_key).encrypt(data)
+PKCS1\_OAEP.new(public\_key).encrypt(data)
 ```
 
 If it says:
@@ -980,7 +969,7 @@ If it says:
 use:
 
 ```python
-PKCS1_OAEP.new(private_key).decrypt(ct)
+PKCS1\_OAEP.new(private\_key).decrypt(ct)
 ```
 
 If it says:
@@ -1010,7 +999,7 @@ If it says:
 use:
 
 ```python
-pkcs1_15.new(private_key).sign(SHA256.new(data))
+pkcs1\_15.new(private\_key).sign(SHA256.new(data))
 ```
 
 If it says:
@@ -1022,7 +1011,7 @@ If it says:
 use:
 
 ```python
-pkcs1_15.new(public_key).verify(SHA256.new(data), signature)
+pkcs1\_15.new(public\_key).verify(SHA256.new(data), signature)
 ```
 
 If it says:
@@ -1035,7 +1024,7 @@ use:
 
 ```python
 c1 = pow(g, k, p)
-c2 = m * pow(y, k, p) % p
+c2 = m \* pow(y, k, p) % p
 ```
 
 If it says:
@@ -1068,57 +1057,58 @@ use:
 
 ```python
 tampered = bytearray(ct)
-tampered[0] ^= 1
+tampered\[0] ^= 1
 tampered = bytes(tampered)
 ```
 
----
+\---
 
-# 27. Final pre-submission checklist
+# 27\. Final pre-submission checklist
 
 Before running the program, check:
 
 ```text
-[ ] Did I use exactly the requested algorithms?
-[ ] Did I take supplied question values through input()?
-[ ] Are generated crypto values generated only where appropriate?
-[ ] Are AES key and IV lengths correct?
-[ ] Is CBC plaintext padded and decrypted data unpadded?
-[ ] Is RSA encryption OAEP-based?
-[ ] Is the hash computed over the exact required object?
-[ ] Does private key sign and public key verify?
-[ ] Does public key encrypt and private key decrypt?
-[ ] Does ElGamal use correct modular arithmetic?
-[ ] Are ciphertext/signature/IV converted correctly for storage?
-[ ] Are timestamps present?
-[ ] Does each role see only authorized data?
-[ ] Is private-key access restricted?
-[ ] Does verification happen before conditional decryption?
-[ ] Does tampering produce failure?
-[ ] On verification failure, is decryption skipped?
+\[ ] Did I use exactly the requested algorithms?
+\[ ] Did I take supplied question values through input()?
+\[ ] Are generated crypto values generated only where appropriate?
+\[ ] Are AES key and IV lengths correct?
+\[ ] Is CBC plaintext padded and decrypted data unpadded?
+\[ ] Is RSA encryption OAEP-based?
+\[ ] Is the hash computed over the exact required object?
+\[ ] Does private key sign and public key verify?
+\[ ] Does public key encrypt and private key decrypt?
+\[ ] Does ElGamal use correct modular arithmetic?
+\[ ] Are ciphertext/signature/IV converted correctly for storage?
+\[ ] Are timestamps present?
+\[ ] Does each role see only authorized data?
+\[ ] Is private-key access restricted?
+\[ ] Does verification happen before conditional decryption?
+\[ ] Does tampering produce failure?
+\[ ] On verification failure, is decryption skipped?
 ```
 
----
+\---
 
-# 28. GitHub source paths
+# 28\. GitHub source paths
 
 Repository:
 
-`https://github.com/Debrato2005/Sem_5_Labs`
+`https://github.com/Debrato2005/Sem\_5\_Labs`
 
 Primary folder:
 
-`Debrato_240911734_IS/midsems/`
+`Debrato\_240911734\_IS/midsems/`
 
 Use these files while practicing:
 
 ```text
-Lab_2_Advanced_Symmetric_Key_Ciphers.md
-Lab_3_Asymmetric_Key_Ciphers.md
-Lab_4_Advanced_Asymmetric_Key_Cryptography (1).md
-Lab_5_Hashing.md
-Lab_6_Digital_Signatures.md
+Lab\_2\_Advanced\_Symmetric\_Key\_Ciphers.md
+Lab\_3\_Asymmetric\_Key\_Ciphers.md
+Lab\_4\_Advanced\_Asymmetric\_Key\_Cryptography (1).md
+Lab\_5\_Hashing.md
+Lab\_6\_Digital\_Signatures.md
 download.md
 ```
 
 The key idea is to practice **assembling these blocks**, because the midsem-style problems combine the labs rather than staying within one isolated exercise.
+

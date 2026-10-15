@@ -1,7 +1,6 @@
-q1.o: q1.c
-q1.o: C:\Keil\ARM\Inc\NXP\LPC17xx\LPC17XX.H
-q1.o: C:\Keil\ARM\CMSIS\Include\core_cm3.h
-q1.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
-q1.o: C:\Keil\ARM\CMSIS\Include\core_cmInstr.h
-q1.o: C:\Keil\ARM\CMSIS\Include\core_cmFunc.h
-q1.o: C:\Keil\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
+./q1.o: q1.c \
+  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17xx.h \
+  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h \
+  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h \
+  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h \
+  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h

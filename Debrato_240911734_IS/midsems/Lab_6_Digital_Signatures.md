@@ -1,6 +1,6 @@
 # Lab 6 — Digital Signatures
 
-> Exam-ready reference based on the uploaded **Lab No. 6: Digital Signature** manual.
+> Exam-ready reference based on the uploaded \*\*Lab No. 6: Digital Signature\*\* manual.
 >
 > The manual covers:
 > - signing and verifying RSA digital signatures,
@@ -10,11 +10,11 @@
 > - client/server verification,
 > - a combined CIA-style exercise using RSA encryption, digital signatures, and SHA hashing.
 >
-> **Exam rule:** all message/key/file values below are user-input based unless cryptographic keys/nonces must be securely generated.
+> \*\*Exam rule:\*\* all message/key/file values below are user-input based unless cryptographic keys/nonces must be securely generated.
 
----
+\---
 
-# 0. CORE IDEA
+# 0\. CORE IDEA
 
 A digital signature provides:
 
@@ -49,9 +49,9 @@ Verify signature using PUBLIC key
 VALID / INVALID
 ```
 
----
+\---
 
-# 1. MOST IMPORTANT EXAM RULE
+# 1\. MOST IMPORTANT EXAM RULE
 
 ```text
 ENCRYPTION
@@ -68,9 +68,9 @@ Public key  -> verify
 
 Do not mix these up.
 
----
+\---
 
-# 2. INSTALL
+# 2\. INSTALL
 
 ```bash
 pip install pycryptodome
@@ -80,23 +80,23 @@ Most code below uses:
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 ```
 
----
+\---
 
-# 3. RSA DIGITAL SIGNATURE — SHORTEST COMPLETE PROGRAM
+# 3\. RSA DIGITAL SIGNATURE — SHORTEST COMPLETE PROGRAM
 
 Use when the question says:
 
-- generate RSA keys,
-- sign a message,
-- verify the signature.
+* generate RSA keys,
+* sign a message,
+* verify the signature.
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
@@ -105,13 +105,13 @@ bits = int(input("RSA key size: "))
 key = RSA.generate(bits)
 
 h = SHA256.new(msg)
-sig = pkcs1_15.new(key).sign(h)
+sig = pkcs1\_15.new(key).sign(h)
 
-print("Public key:\n", key.publickey().export_key().decode())
+print("Public key:\\n", key.publickey().export\_key().decode())
 print("Signature:", sig.hex())
 
 try:
-    pkcs1_15.new(key.publickey()).verify(SHA256.new(msg), sig)
+    pkcs1\_15.new(key.publickey()).verify(SHA256.new(msg), sig)
     print("Signature valid")
 except:
     print("Signature invalid")
@@ -119,38 +119,38 @@ except:
 
 For modern PyCryptodome RSA generation, use at least a library-supported secure size such as 1024/2048 bits depending on the lab environment.
 
----
+\---
 
-# 4. RSA SIGN + VERIFY — EXISTING PEM KEYS
+# 4\. RSA SIGN + VERIFY — EXISTING PEM KEYS
 
 Use when keys are stored in files.
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
-priv_path = input("Private key file: ")
-pub_path = input("Public key file: ")
+priv\_path = input("Private key file: ")
+pub\_path = input("Public key file: ")
 
-priv = RSA.import_key(open(priv_path, "rb").read())
-pub = RSA.import_key(open(pub_path, "rb").read())
+priv = RSA.import\_key(open(priv\_path, "rb").read())
+pub = RSA.import\_key(open(pub\_path, "rb").read())
 
-sig = pkcs1_15.new(priv).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(priv).sign(SHA256.new(msg))
 
 print("Signature:", sig.hex())
 
 try:
-    pkcs1_15.new(pub).verify(SHA256.new(msg), sig)
+    pkcs1\_15.new(pub).verify(SHA256.new(msg), sig)
     print("Signature valid")
 except:
     print("Signature invalid")
 ```
 
----
+\---
 
-# 5. RSA — GENERATE AND SAVE KEYS
+# 5\. RSA — GENERATE AND SAVE KEYS
 
 ```python
 from Crypto.PublicKey import RSA
@@ -160,82 +160,82 @@ prefix = input("File prefix: ")
 
 key = RSA.generate(bits)
 
-open(prefix + "_private.pem", "wb").write(key.export_key())
-open(prefix + "_public.pem", "wb").write(key.publickey().export_key())
+open(prefix + "\_private.pem", "wb").write(key.export\_key())
+open(prefix + "\_public.pem", "wb").write(key.publickey().export\_key())
 
 print("Keys saved")
 ```
 
----
+\---
 
-# 6. RSA — SIGN A FILE
+# 6\. RSA — SIGN A FILE
 
 Use when the question says "document", "file", "legal document", etc.
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 path = input("File to sign: ")
-key_path = input("Private key file: ")
-sig_path = input("Signature output file: ")
+key\_path = input("Private key file: ")
+sig\_path = input("Signature output file: ")
 
 data = open(path, "rb").read()
-key = RSA.import_key(open(key_path, "rb").read())
+key = RSA.import\_key(open(key\_path, "rb").read())
 
-sig = pkcs1_15.new(key).sign(SHA256.new(data))
+sig = pkcs1\_15.new(key).sign(SHA256.new(data))
 
-open(sig_path, "wb").write(sig)
+open(sig\_path, "wb").write(sig)
 
 print("Signature:", sig.hex())
 ```
 
----
+\---
 
-# 7. RSA — VERIFY A FILE SIGNATURE
+# 7\. RSA — VERIFY A FILE SIGNATURE
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 path = input("File: ")
-sig_path = input("Signature file: ")
-pub_path = input("Public key file: ")
+sig\_path = input("Signature file: ")
+pub\_path = input("Public key file: ")
 
 data = open(path, "rb").read()
-sig = open(sig_path, "rb").read()
-pub = RSA.import_key(open(pub_path, "rb").read())
+sig = open(sig\_path, "rb").read()
+pub = RSA.import\_key(open(pub\_path, "rb").read())
 
 try:
-    pkcs1_15.new(pub).verify(SHA256.new(data), sig)
+    pkcs1\_15.new(pub).verify(SHA256.new(data), sig)
     print("Signature valid")
 except:
     print("Signature invalid")
 ```
 
----
+\---
 
-# 8. RSA — TAMPERING DEMONSTRATION
+# 8\. RSA — TAMPERING DEMONSTRATION
 
 This is useful when the question asks to show that a signature detects modification.
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Original message: ").encode()
 bits = int(input("RSA key size: "))
 
 key = RSA.generate(bits)
-sig = pkcs1_15.new(key).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(key).sign(SHA256.new(msg))
 
 received = input("Received message: ").encode()
 
 try:
-    pkcs1_15.new(key.publickey()).verify(SHA256.new(received), sig)
+    pkcs1\_15.new(key.publickey()).verify(SHA256.new(received), sig)
     print("Signature valid")
 except:
     print("Signature invalid - message/key/signature changed")
@@ -243,9 +243,9 @@ except:
 
 If `received != msg`, verification should fail.
 
----
+\---
 
-# 9. RSA SIGNATURE — NUMERICAL / TEXTBOOK VERSION
+# 9\. RSA SIGNATURE — NUMERICAL / TEXTBOOK VERSION
 
 Use if the exam gives:
 
@@ -263,7 +263,7 @@ n = int(input("n: "))
 e = int(input("e: "))
 d = int(input("d: "))
 
-h = int.from_bytes(sha256(msg).digest(), "big") % n
+h = int.from\_bytes(sha256(msg).digest(), "big") % n
 
 sig = pow(h, d, n)
 verified = pow(sig, e, n)
@@ -289,9 +289,9 @@ Valid if:
 h' = h
 ```
 
----
+\---
 
-# 10. HASH ONLY — SHA-256
+# 10\. HASH ONLY — SHA-256
 
 ```python
 from hashlib import sha256
@@ -308,9 +308,9 @@ Hashing alone -> integrity comparison
 Digital signature -> integrity + signer authentication
 ```
 
----
+\---
 
-# 11. RSA ENCRYPTION + RSA SIGNATURE + SHA-256
+# 11\. RSA ENCRYPTION + RSA SIGNATURE + SHA-256
 
 This is a compact combined answer for scenarios requiring:
 
@@ -320,8 +320,8 @@ confidentiality + integrity + authentication
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Signature import pkcs1_15
+from Crypto.Cipher import PKCS1\_OAEP
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
@@ -331,20 +331,20 @@ sender = RSA.generate(bits)
 receiver = RSA.generate(bits)
 
 # Sender signs plaintext
-sig = pkcs1_15.new(sender).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(sender).sign(SHA256.new(msg))
 
 # Sender encrypts for receiver
-ct = PKCS1_OAEP.new(receiver.publickey()).encrypt(msg)
+ct = PKCS1\_OAEP.new(receiver.publickey()).encrypt(msg)
 
 print("Ciphertext:", ct.hex())
 print("Signature:", sig.hex())
 
 # Receiver decrypts
-pt = PKCS1_OAEP.new(receiver).decrypt(ct)
+pt = PKCS1\_OAEP.new(receiver).decrypt(ct)
 
 # Receiver verifies sender
 try:
-    pkcs1_15.new(sender.publickey()).verify(SHA256.new(pt), sig)
+    pkcs1\_15.new(sender.publickey()).verify(SHA256.new(pt), sig)
     print("Signature valid")
     print("Decrypted:", pt.decode())
 except:
@@ -359,9 +359,9 @@ SHA-256         -> message digest
 RSA signature  -> integrity + authenticity
 ```
 
----
+\---
 
-# 12. IMPORTANT CIA-TRIAD NOTE
+# 12\. IMPORTANT CIA-TRIAD NOTE
 
 The manual's additional exercise says to demonstrate the **CIA triad** using RSA encryption, digital signature, and SHA hashing.
 
@@ -404,9 +404,9 @@ No. They mainly provide confidentiality, integrity and authenticity.
 Availability requires separate operational/system controls.
 ```
 
----
+\---
 
-# 13. VERIFY BEFORE DECRYPTING — SIGN THE CIPHERTEXT
+# 13\. VERIFY BEFORE DECRYPTING — SIGN THE CIPHERTEXT
 
 Sometimes a combined scenario explicitly says:
 
@@ -421,8 +421,8 @@ Use this structure:
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Signature import pkcs1_15
+from Crypto.Cipher import PKCS1\_OAEP
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
@@ -431,20 +431,20 @@ bits = int(input("RSA key size: "))
 sender = RSA.generate(bits)
 receiver = RSA.generate(bits)
 
-ct = PKCS1_OAEP.new(receiver.publickey()).encrypt(msg)
+ct = PKCS1\_OAEP.new(receiver.publickey()).encrypt(msg)
 
-sig = pkcs1_15.new(sender).sign(SHA256.new(ct))
+sig = pkcs1\_15.new(sender).sign(SHA256.new(ct))
 
 print("Ciphertext:", ct.hex())
 print("Signature:", sig.hex())
 
 try:
-    pkcs1_15.new(sender.publickey()).verify(SHA256.new(ct), sig)
+    pkcs1\_15.new(sender.publickey()).verify(SHA256.new(ct), sig)
 
     print("Sender verified")
     print("Integrity verified")
 
-    pt = PKCS1_OAEP.new(receiver).decrypt(ct)
+    pt = PKCS1\_OAEP.new(receiver).decrypt(ct)
 
     print("Decrypted:", pt.decode())
 
@@ -459,9 +459,9 @@ This ordering is ideal if the question explicitly says:
 do not decrypt when integrity fails
 ```
 
----
+\---
 
-# 14. FORCE INTEGRITY FAILURE BY MODIFYING CIPHERTEXT
+# 14\. FORCE INTEGRITY FAILURE BY MODIFYING CIPHERTEXT
 
 ```python
 tampered = bytearray(ct)
@@ -469,7 +469,7 @@ tampered = bytearray(ct)
 if not tampered:
     raise ValueError("Ciphertext is empty")
 
-tampered[0] ^= 1
+tampered\[0] ^= 1
 tampered = bytes(tampered)
 ```
 
@@ -477,7 +477,7 @@ Verification:
 
 ```python
 try:
-    pkcs1_15.new(sender.publickey()).verify(
+    pkcs1\_15.new(sender.publickey()).verify(
         SHA256.new(tampered),
         sig
     )
@@ -490,9 +490,9 @@ except:
 
 Do **not** decrypt after failure if the question says not to.
 
----
+\---
 
-# 15. RSA ENCRYPTION AND SIGNATURE — KEY ROLES
+# 15\. RSA ENCRYPTION AND SIGNATURE — KEY ROLES
 
 If Alice sends securely to Bob:
 
@@ -508,9 +508,9 @@ Bob verifies using Alice's PUBLIC key
 
 This is extremely important.
 
----
+\---
 
-# 16. ELGAMAL DIGITAL SIGNATURE — TEXTBOOK PROGRAM
+# 16\. ELGAMAL DIGITAL SIGNATURE — TEXTBOOK PROGRAM
 
 The Lab 6 exercise asks to try ElGamal.
 
@@ -533,7 +533,7 @@ Signature:
 ```text
 r = g^k mod p
 
-s = k^(-1) * (H(m) - x*r) mod (p-1)
+s = k^(-1) \* (H(m) - x\*r) mod (p-1)
 ```
 
 Verification:
@@ -541,7 +541,7 @@ Verification:
 ```text
 g^H(m) mod p
 =
-y^r * r^s mod p
+y^r \* r^s mod p
 ```
 
 Program:
@@ -560,22 +560,22 @@ if gcd(k, p-1) != 1:
     raise ValueError("k must be coprime with p-1")
 
 y = pow(g, x, p)
-h = int.from_bytes(sha256(msg).digest(), "big") % (p-1)
+h = int.from\_bytes(sha256(msg).digest(), "big") % (p-1)
 
 r = pow(g, k, p)
-s = (pow(k, -1, p-1) * (h - x*r)) % (p-1)
+s = (pow(k, -1, p-1) \* (h - x\*r)) % (p-1)
 
 left = pow(g, h, p)
-right = pow(y, r, p) * pow(r, s, p) % p
+right = pow(y, r, p) \* pow(r, s, p) % p
 
 print("Public key:", (p, g, y))
 print("Signature:", (r, s))
 print("Signature valid:", left == right)
 ```
 
----
+\---
 
-# 17. ELGAMAL SIGNATURE — USER PROVIDES PUBLIC KEY FOR VERIFY
+# 17\. ELGAMAL SIGNATURE — USER PROVIDES PUBLIC KEY FOR VERIFY
 
 Useful if sender and receiver are separated.
 
@@ -591,17 +591,17 @@ y = int(input("Public key y: "))
 r = int(input("Signature r: "))
 s = int(input("Signature s: "))
 
-h = int.from_bytes(sha256(msg).digest(), "big") % (p-1)
+h = int.from\_bytes(sha256(msg).digest(), "big") % (p-1)
 
 left = pow(g, h, p)
-right = pow(y, r, p) * pow(r, s, p) % p
+right = pow(y, r, p) \* pow(r, s, p) % p
 
 print("Signature valid:", left == right)
 ```
 
----
+\---
 
-# 18. SCHNORR DIGITAL SIGNATURE — TEXTBOOK VERSION
+# 18\. SCHNORR DIGITAL SIGNATURE — TEXTBOOK VERSION
 
 The manual asks to try Schnorr but does not provide the mathematical specification.
 
@@ -622,7 +622,7 @@ Signing:
 ```text
 r = g^k mod p
 e = H(message || r) mod q
-s = k + e*x mod q
+s = k + e\*x mod q
 ```
 
 Verification:
@@ -630,7 +630,7 @@ Verification:
 ```text
 g^s mod p
 =
-r * y^e mod p
+r \* y^e mod p
 ```
 
 Program:
@@ -652,36 +652,36 @@ if (p-1) % q != 0:
 y = pow(g, x, p)
 r = pow(g, k, p)
 
-e = int.from_bytes(
+e = int.from\_bytes(
     sha256(msg + str(r).encode()).digest(),
     "big"
 ) % q
 
-s = (k + e*x) % q
+s = (k + e\*x) % q
 
-valid = pow(g, s, p) == (r * pow(y, e, p)) % p
+valid = pow(g, s, p) == (r \* pow(y, e, p)) % p
 
 print("Public key:", y)
 print("Signature:", (e, s))
 print("Signature valid:", valid)
 ```
 
----
+\---
 
-# 19. SCHNORR — VERIFY PROVIDED SIGNATURE
+# 19\. SCHNORR — VERIFY PROVIDED SIGNATURE
 
 Because the signature above stores `(e,s)`, the verifier reconstructs `r`.
 
 From:
 
 ```text
-g^s = r*y^e
+g^s = r\*y^e
 ```
 
 therefore:
 
 ```text
-r = g^s * (y^e)^(-1) mod p
+r = g^s \* (y^e)^(-1) mod p
 ```
 
 Program:
@@ -699,9 +699,9 @@ y = int(input("Public key y: "))
 e = int(input("Signature e: "))
 s = int(input("Signature s: "))
 
-r = pow(g, s, p) * pow(pow(y, e, p), -1, p) % p
+r = pow(g, s, p) \* pow(pow(y, e, p), -1, p) % p
 
-e2 = int.from_bytes(
+e2 = int.from\_bytes(
     sha256(msg + str(r).encode()).digest(),
     "big"
 ) % q
@@ -709,9 +709,9 @@ e2 = int.from_bytes(
 print("Signature valid:", e2 == e)
 ```
 
----
+\---
 
-# 20. DIFFIE–HELLMAN — WHAT THE MANUAL ASKS VS WHAT IT DOES
+# 20\. DIFFIE–HELLMAN — WHAT THE MANUAL ASKS VS WHAT IT DOES
 
 The manual asks to:
 
@@ -737,9 +737,9 @@ shared secret -> authenticate message using HMAC
 
 This gives shared-key message authentication, **not a public-key digital signature**.
 
----
+\---
 
-# 21. DIFFIE–HELLMAN + HMAC — COMPLETE DEMO
+# 21\. DIFFIE–HELLMAN + HMAC — COMPLETE DEMO
 
 ```python
 from hashlib import sha256
@@ -762,7 +762,7 @@ kb = sha256(str(Kb).encode()).digest()
 
 tag = hmac.new(ka, msg, sha256).hexdigest()
 
-valid = hmac.compare_digest(
+valid = hmac.compare\_digest(
     tag,
     hmac.new(kb, msg, sha256).hexdigest()
 )
@@ -782,9 +782,9 @@ HMAC != digital signature
 
 because both parties know the same secret key.
 
----
+\---
 
-# 22. CLIENT/SERVER RSA SIGNATURE — SERVER
+# 22\. CLIENT/SERVER RSA SIGNATURE — SERVER
 
 The manual asks to perform the signature workflow in a client/server scenario.
 
@@ -793,7 +793,7 @@ Use this as `server.py`.
 ```python
 import socket, json, base64
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 host = input("Host (blank for all): ")
@@ -809,12 +809,12 @@ c, addr = s.accept()
 
 obj = json.loads(c.recv(65536).decode())
 
-msg = obj["message"].encode()
-sig = bytes.fromhex(obj["signature"])
-pub = RSA.import_key(base64.b64decode(obj["public_key"]))
+msg = obj\["message"].encode()
+sig = bytes.fromhex(obj\["signature"])
+pub = RSA.import\_key(base64.b64decode(obj\["public\_key"]))
 
 try:
-    pkcs1_15.new(pub).verify(SHA256.new(msg), sig)
+    pkcs1\_15.new(pub).verify(SHA256.new(msg), sig)
     result = "Signature valid"
 except:
     result = "Signature invalid"
@@ -829,16 +829,16 @@ c.close()
 s.close()
 ```
 
----
+\---
 
-# 23. CLIENT/SERVER RSA SIGNATURE — CLIENT
+# 23\. CLIENT/SERVER RSA SIGNATURE — CLIENT
 
 Use as `client.py`.
 
 ```python
 import socket, json, base64
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 host = input("Server host: ")
@@ -848,13 +848,13 @@ bits = int(input("RSA key size: "))
 
 key = RSA.generate(bits)
 
-sig = pkcs1_15.new(key).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(key).sign(SHA256.new(msg))
 
 obj = {
     "message": msg.decode(),
     "signature": sig.hex(),
-    "public_key": base64.b64encode(
-        key.publickey().export_key()
+    "public\_key": base64.b64encode(
+        key.publickey().export\_key()
     ).decode()
 }
 
@@ -867,14 +867,14 @@ print(s.recv(1024).decode())
 s.close()
 ```
 
----
+\---
 
-# 24. CLIENT/SERVER — TAMPERING TEST
+# 24\. CLIENT/SERVER — TAMPERING TEST
 
 In the client code, after creating the signature:
 
 ```python
-sig = pkcs1_15.new(key).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(key).sign(SHA256.new(msg))
 ```
 
 you can intentionally send a changed message:
@@ -888,7 +888,7 @@ but keep the original signature.
 Then:
 
 ```python
-obj["message"] = sent.decode()
+obj\["message"] = sent.decode()
 ```
 
 If:
@@ -903,9 +903,9 @@ the server should print:
 Signature invalid
 ```
 
----
+\---
 
-# 25. SIGNATURE + ENCRYPTION — COMPLETE TWO-PARTY MODEL
+# 25\. SIGNATURE + ENCRYPTION — COMPLETE TWO-PARTY MODEL
 
 Suppose Alice sends to Bob.
 
@@ -925,18 +925,18 @@ Bob:
 Code roles:
 
 ```python
-sender_private
-sender_public
+sender\_private
+sender\_public
 
-receiver_private
-receiver_public
+receiver\_private
+receiver\_public
 ```
 
 Do not accidentally verify using Bob's public key.
 
----
+\---
 
-# 26. HASH-THEN-SIGN
+# 26\. HASH-THEN-SIGN
 
 Standard conceptual sequence:
 
@@ -954,18 +954,18 @@ With PyCryptodome:
 
 ```python
 h = SHA256.new(msg)
-sig = pkcs1_15.new(private_key).sign(h)
+sig = pkcs1\_15.new(private\_key).sign(h)
 ```
 
 Verification:
 
 ```python
-pkcs1_15.new(public_key).verify(SHA256.new(msg), sig)
+pkcs1\_15.new(public\_key).verify(SHA256.new(msg), sig)
 ```
 
----
+\---
 
-# 27. WHAT HAPPENS IF MESSAGE CHANGES?
+# 27\. WHAT HAPPENS IF MESSAGE CHANGES?
 
 Original:
 
@@ -987,13 +987,13 @@ H(M) != H(M')
 
 So the old signature no longer verifies against the changed message.
 
----
+\---
 
-# 28. WHAT HAPPENS IF SIGNATURE CHANGES?
+# 28\. WHAT HAPPENS IF SIGNATURE CHANGES?
 
 ```python
 tampered = bytearray(sig)
-tampered[0] ^= 1
+tampered\[0] ^= 1
 tampered = bytes(tampered)
 ```
 
@@ -1001,21 +1001,21 @@ Then:
 
 ```python
 try:
-    pkcs1_15.new(pub).verify(SHA256.new(msg), tampered)
+    pkcs1\_15.new(pub).verify(SHA256.new(msg), tampered)
     print("Valid")
 except:
     print("Invalid")
 ```
 
----
+\---
 
-# 29. WHAT HAPPENS IF WRONG PUBLIC KEY IS USED?
+# 29\. WHAT HAPPENS IF WRONG PUBLIC KEY IS USED?
 
 ```python
 wrong = RSA.generate(bits)
 
 try:
-    pkcs1_15.new(wrong.publickey()).verify(SHA256.new(msg), sig)
+    pkcs1\_15.new(wrong.publickey()).verify(SHA256.new(msg), sig)
     print("Valid")
 except:
     print("Invalid")
@@ -1029,9 +1029,9 @@ Invalid
 
 because the signature was created with another private key.
 
----
+\---
 
-# 30. AUTHENTICITY vs INTEGRITY
+# 30\. AUTHENTICITY vs INTEGRITY
 
 ```text
 HASH ONLY
@@ -1048,9 +1048,9 @@ signature verification checks both
 - signer possession of the corresponding private key
 ```
 
----
+\---
 
-# 31. PUBLIC / PRIVATE KEY SHARING
+# 31\. PUBLIC / PRIVATE KEY SHARING
 
 Standard cryptographic practice:
 
@@ -1078,9 +1078,9 @@ public key + message/signature
 
 not the private key.
 
----
+\---
 
-# 32. MANUAL ONLINE-RSA TOOL CAUTION
+# 32\. MANUAL ONLINE-RSA TOOL CAUTION
 
 The manual shows an online RSA signing tool and gives:
 
@@ -1100,9 +1100,9 @@ SHA-256 + PKCS#1 v1.5 signature
 
 is a standard implementation, but you should **not expect its signature bytes to exactly match the website's output** unless the website uses the same signature encoding and hash.
 
----
+\---
 
-# 33. ELGAMAL vs RSA SIGNATURE QUICK DIFFERENCE
+# 33\. ELGAMAL vs RSA SIGNATURE QUICK DIFFERENCE
 
 ```text
 RSA signature:
@@ -1121,9 +1121,9 @@ k must satisfy gcd(k,p-1)=1
 
 and should not be reused.
 
----
+\---
 
-# 34. SCHNORR QUICK IDEA
+# 34\. SCHNORR QUICK IDEA
 
 ```text
 private key = x
@@ -1134,7 +1134,7 @@ commitment r = g^k
 
 challenge e = H(message || r)
 
-response s = k + e*x mod q
+response s = k + e\*x mod q
 ```
 
 Verification checks the algebraic relation between:
@@ -1143,45 +1143,45 @@ Verification checks the algebraic relation between:
 g, y, r, e, s
 ```
 
----
+\---
 
-# 35. RSA SIGNATURE TIMING
+# 35\. RSA SIGNATURE TIMING
 
 ```python
-from time import perf_counter
+from time import perf\_counter
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
 bits = int(input("RSA key size: "))
 
-t = perf_counter()
+t = perf\_counter()
 key = RSA.generate(bits)
-kg = perf_counter() - t
+kg = perf\_counter() - t
 
-t = perf_counter()
-sig = pkcs1_15.new(key).sign(SHA256.new(msg))
-st = perf_counter() - t
+t = perf\_counter()
+sig = pkcs1\_15.new(key).sign(SHA256.new(msg))
+st = perf\_counter() - t
 
-t = perf_counter()
-pkcs1_15.new(key.publickey()).verify(SHA256.new(msg), sig)
-vt = perf_counter() - t
+t = perf\_counter()
+pkcs1\_15.new(key.publickey()).verify(SHA256.new(msg), sig)
+vt = perf\_counter() - t
 
 print("Key generation:", kg)
 print("Signing:", st)
 print("Verification:", vt)
 ```
 
----
+\---
 
-# 36. HASH FILE + SIGN HASH
+# 36\. HASH FILE + SIGN HASH
 
 For a document/file:
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 path = input("File: ")
@@ -1191,21 +1191,21 @@ data = open(path, "rb").read()
 key = RSA.generate(bits)
 
 h = SHA256.new(data)
-sig = pkcs1_15.new(key).sign(h)
+sig = pkcs1\_15.new(key).sign(h)
 
 print("SHA-256:", h.hexdigest())
 print("Signature:", sig.hex())
 
 try:
-    pkcs1_15.new(key.publickey()).verify(SHA256.new(data), sig)
+    pkcs1\_15.new(key.publickey()).verify(SHA256.new(data), sig)
     print("Signature valid")
 except:
     print("Signature invalid")
 ```
 
----
+\---
 
-# 37. SAVE SIGNATURE AS HEX TEXT
+# 37\. SAVE SIGNATURE AS HEX TEXT
 
 ```python
 path = input("Signature output file: ")
@@ -1219,34 +1219,34 @@ Read later:
 sig = bytes.fromhex(open(path).read().strip())
 ```
 
----
+\---
 
-# 38. EXAM ROUTING TABLE
+# 38\. EXAM ROUTING TABLE
 
-| Question wording | Use |
-|---|---|
-| RSA sign + verify message | Section 3 |
-| Use existing RSA PEM keys | Section 4 |
-| Generate/save RSA keys | Section 5 |
-| Sign a document/file | Section 6 |
-| Verify document signature | Section 7 |
-| Demonstrate message tampering | Section 8 |
-| Numerical RSA signature with `n,e,d` | Section 9 |
-| SHA hashing | Section 10 |
-| RSA encryption + signature + hash | Section 11 |
-| Verify before decrypting | Section 13 |
-| Tamper ciphertext | Section 14 |
-| ElGamal signature | Sections 16–17 |
-| Schnorr signature | Sections 18–19 |
-| Diffie–Hellman lab variant | Sections 20–21 |
-| Client/server signature | Sections 22–24 |
-| Explain key roles | Sections 15, 25 |
-| Compare hash vs signature | Sections 26–30 |
-| Timing | Section 35 |
+|Question wording|Use|
+|-|-|
+|RSA sign + verify message|Section 3|
+|Use existing RSA PEM keys|Section 4|
+|Generate/save RSA keys|Section 5|
+|Sign a document/file|Section 6|
+|Verify document signature|Section 7|
+|Demonstrate message tampering|Section 8|
+|Numerical RSA signature with `n,e,d`|Section 9|
+|SHA hashing|Section 10|
+|RSA encryption + signature + hash|Section 11|
+|Verify before decrypting|Section 13|
+|Tamper ciphertext|Section 14|
+|ElGamal signature|Sections 16–17|
+|Schnorr signature|Sections 18–19|
+|Diffie–Hellman lab variant|Sections 20–21|
+|Client/server signature|Sections 22–24|
+|Explain key roles|Sections 15, 25|
+|Compare hash vs signature|Sections 26–30|
+|Timing|Section 35|
 
----
+\---
 
-# 39. COMMON ERRORS
+# 39\. COMMON ERRORS
 
 ## Error 1 — signing with public key
 
@@ -1263,7 +1263,7 @@ private key signs
 public key verifies
 ```
 
----
+\---
 
 ## Error 2 — verifying using receiver's public key
 
@@ -1275,7 +1275,7 @@ verify with ALICE'S public key
 
 not Bob's.
 
----
+\---
 
 ## Error 3 — confusing signature with encryption
 
@@ -1285,7 +1285,7 @@ Encryption gives confidentiality.
 
 Signature gives authenticity/integrity.
 
----
+\---
 
 ## Error 4 — hashing and calling it a signature
 
@@ -1297,7 +1297,7 @@ is a digest.
 
 It is not a digital signature.
 
----
+\---
 
 ## Error 5 — distributing private key
 
@@ -1305,7 +1305,7 @@ Do not do this in a real system.
 
 Only the public key is distributed.
 
----
+\---
 
 ## Error 6 — reusing ElGamal/Schnorr nonce
 
@@ -1319,7 +1319,7 @@ is important.
 
 Do not reuse it in real cryptographic signing.
 
----
+\---
 
 ## Error 7 — calling DH a digital signature
 
@@ -1327,9 +1327,9 @@ Diffie–Hellman is key exchange.
 
 DH + HMAC provides shared-key authentication, not public-key digital signatures.
 
----
+\---
 
-# 40. MASTER COMMENT FOR LAB 6
+# 40\. MASTER COMMENT FOR LAB 6
 
 Paste this at the top of your Lab 6 notes:
 
@@ -1346,8 +1346,8 @@ Paste this at the top of your Lab 6 notes:
 #
 # RSA signature:
 #   h = SHA256(message)
-#   signature = sign(h, private_key)
-#   verify(h, signature, public_key)
+#   signature = sign(h, private\_key)
+#   verify(h, signature, public\_key)
 #
 # If message/signature/public key changes:
 #   verification should fail
@@ -1366,15 +1366,15 @@ Paste this at the top of your Lab 6 notes:
 # ELGAMAL SIGNATURE:
 #   y = g^x mod p
 #   r = g^k mod p
-#   s = k^-1 * (H(m)-x*r) mod (p-1)
+#   s = k^-1 \* (H(m)-x\*r) mod (p-1)
 #   verify:
-#   g^H(m) == y^r * r^s (mod p)
+#   g^H(m) == y^r \* r^s (mod p)
 #
 # SCHNORR:
 #   y=g^x
 #   r=g^k
 #   e=H(m||r)
-#   s=k+e*x mod q
+#   s=k+e\*x mod q
 #
 # DH:
 #   key exchange, NOT digital signature
@@ -1386,22 +1386,22 @@ Paste this at the top of your Lab 6 notes:
 # Private key must remain secret.
 ```
 
----
+\---
 
-# 41. MINIMUM RSA CODE TO REMEMBER
+# 41\. MINIMUM RSA CODE TO REMEMBER
 
 ```python
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
+from Crypto.Signature import pkcs1\_15
 from Crypto.Hash import SHA256
 
 msg = input("Message: ").encode()
 key = RSA.generate(int(input("RSA bits: ")))
 
-sig = pkcs1_15.new(key).sign(SHA256.new(msg))
+sig = pkcs1\_15.new(key).sign(SHA256.new(msg))
 
 try:
-    pkcs1_15.new(key.publickey()).verify(SHA256.new(msg), sig)
+    pkcs1\_15.new(key.publickey()).verify(SHA256.new(msg), sig)
     print("Valid")
 except:
     print("Invalid")
@@ -1409,6 +1409,7 @@ except:
 
 If you remember only one Lab 6 program, remember this one.
 
----
+\---
 
 # END — LAB 6
+

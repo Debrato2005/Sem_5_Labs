@@ -1,5 +1,5 @@
 //Write a C program to display 8-bit binary up counter on the LEDs.
-#include <LPC17XX.H>
+#include <LPC17xx.h>
 int main()
 {int i,j;
 	SystemInit();

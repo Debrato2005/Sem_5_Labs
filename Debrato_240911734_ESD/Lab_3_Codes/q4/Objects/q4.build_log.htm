@@ -26,9 +26,16 @@ Project File Date:  08/13/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.24', folder: 'C:\Users\Debrato\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
-Build target 'Target_1'
-".\Objects\q4.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:00
+Rebuild target 'Target_1'
+armclang: warning: argument unused during compilation: '-D __UVISION_VERSION=543' [-Wunused-command-line-argument]
+"q4.asm", line 57: Warning: A1581W: Added 2 bytes of padding at address 0x3a
+   57 0000003c SRC1 DCD 0X03
+0 Errors, 1 Warning
+assembling q4.asm...
+linking...
+Program Size: Code=80 RO-data=8 RW-data=8 ZI-data=0  
+".\Objects\q4.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

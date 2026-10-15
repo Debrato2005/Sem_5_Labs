@@ -1,16 +1,15 @@
 Dependencies for Project 'q1', Target 'Target 1': (DO NOT MODIFY !)
-F (.\startup_LPC17xx.s)(0x50877CD6)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\NXP\LPC17xx --list "startup_LPC17xx.lst" --xref -o "startup_LPC17xx.o" --depend "startup_LPC17xx.d")
-F (C:\Keil\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c)(0x50877CD6)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\NXP\LPC17xx -o "system_lpc17xx.o" --omf_browse "system_lpc17xx.crf" --depend "system_lpc17xx.d")
-I (C:\Keil\ARM\ARMCC\bin\..\include\stdint.h)(0x50F98478)
-I (C:\Keil\ARM\Inc\NXP\LPC17xx\LPC17xx.h)(0x50877D02)
-I (C:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x50877EA6)
-I (C:\Keil\ARM\CMSIS\Include\core_cmInstr.h)(0x50877EA6)
-I (C:\Keil\ARM\CMSIS\Include\core_cmFunc.h)(0x50877EA6)
-I (C:\Keil\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x50877D02)
-F (.\q1.c)(0x6AAB6035)(-c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC -I C:\Keil\ARM\CMSIS\Include -I C:\Keil\ARM\Inc\NXP\LPC17xx -o "q1.o" --omf_browse "q1.crf" --depend "q1.d")
-I (C:\Keil\ARM\Inc\NXP\LPC17xx\LPC17XX.H)(0x50877D02)
-I (C:\Keil\ARM\CMSIS\Include\core_cm3.h)(0x50877EA6)
-I (C:\Keil\ARM\ARMCC\bin\..\include\stdint.h)(0x50F98478)
-I (C:\Keil\ARM\CMSIS\Include\core_cmInstr.h)(0x50877EA6)
-I (C:\Keil\ARM\CMSIS\Include\core_cmFunc.h)(0x50877EA6)
-I (C:\Keil\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h)(0x50877D02)
+CompilerVersion: 6240000::V6.24::ARMCLANG
+F (.\startup_LPC17xx.s)(0x6AAFAEA3)(--target=arm-arm-none-eabi -mcpu=cortex-m3 -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4 -Wa,armasm,--pd,"__EVAL SETA 1"-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-Wa,armasm,--pd,"__UVISION_VERSION SETA 543"-o ./startup_lpc17xx.o)
+F (.\q1.c)(0x6ACFE6D4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O1 -fno-function-sections-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-D__UVISION_VERSION="543"-o ./q1.o -MMD)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17XX.H)(0x559D04DA)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h)(0x57037F3A)
+F (..\..\..\..\..\AppData\Local\Keil_v5\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c)(0x57038AE4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O1 -fno-function-sections-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-D__UVISION_VERSION="543"-o ./system_lpc17xx.o -MMD)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17xx.h)(0x559D04DA)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h)(0x57037F3A)
