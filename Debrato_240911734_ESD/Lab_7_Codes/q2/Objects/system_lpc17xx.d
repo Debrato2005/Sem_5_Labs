@@ -1,7 +1,7 @@
-./objects/system_lpc17xx.o: \
-  ..\..\..\..\..\AppData\Local\Keil_v5\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c \
-  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17xx.h \
-  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h \
-  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h \
-  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h \
-  C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\ARMCC\bin\..\include\stdint.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\Inc\NXP\LPC17xx\LPC17xx.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\CMSIS\Include\core_cm3.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\CMSIS\Include\core_cmInstr.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\CMSIS\Include\core_cmFunc.h
+.\Objects\system_lpc17xx.o: C:\Keil\ARM\Inc\NXP\LPC17xx\system_LPC17xx.h
