@@ -13,13 +13,13 @@ char msg[]="Diff: ";
 // Function declarations
 void port_write(void);
 void lcd_write(void);
-void delay(unsigned int);
+void delay(volatile unsigned int);
 
 int main()
 {
 SystemInit();
 SystemCoreClockUpdate();
-LPC_SC->PCONP |= (1<<12);            // enable ADC
+LPC_SC->PCONP = (1<<12);            // enable ADC
 // P0.23-P0.28 as GPIO (LCD)
 LPC_PINCON->PINSEL1=0;
 // P1.30 = AD0.4, P1.31 = AD0.5
@@ -126,9 +126,9 @@ port_write();
 }
 
 // Software delay function
-void delay(unsigned int r1)
+void delay(volatile unsigned int r1)
 {
-unsigned int r;
+volatile unsigned int r;
 // Empty loop to generate delay
 for(r=0;r<r1;r++);
 return;

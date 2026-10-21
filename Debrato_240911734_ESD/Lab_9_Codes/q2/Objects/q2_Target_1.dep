@@ -1,0 +1,5 @@
+Dependencies for Project 'q2', Target 'Target_1': (DO NOT MODIFY !)
+CompilerVersion: <unknown>
+F (.\startup_LPC17xx.s)(0x6AD329B6)()
+F (.\q2.c)(0x6AD9175B)()
+F (C:\Keil\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c)(0x00000000)()

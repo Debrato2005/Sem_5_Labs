@@ -1,0 +1,15 @@
+Dependencies for Project 'q1', Target 'Target_1': (DO NOT MODIFY !)
+CompilerVersion: 6240000::V6.24::ARMCLANG
+F (.\startup_LPC17xx.s)(0x559D03D2)(--target=arm-arm-none-eabi -mcpu=cortex-m3 -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4 -Wa,armasm,--pd,"__EVAL SETA 1"-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-Wa,armasm,--pd,"__UVISION_VERSION SETA 543"-o ./objects/startup_lpc17xx.o)
+F (.\q1.c)(0x6AD91A50)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-D__UVISION_VERSION="543"-o ./objects/q1.o -MMD)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17xx.h)(0x559D04DA)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h)(0x57037F3A)
+F (..\..\..\..\..\AppData\Local\Keil_v5\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c)(0x57038AE4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O0 -ffunction-sections -Wall -Wextra -Wno-packed -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/RV31/INC-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/CMSIS/Include-IC:/Users/Debrato/AppData/Local/Keil_v5/ARM/INC/NXP/LPC17xx-D__UVISION_VERSION="543"-o ./objects/system_lpc17xx.o -MMD)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\LPC17xx.h)(0x559D04DA)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cm3.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D0EC2)
+I (C:\Users\Debrato\AppData\Local\Keil_v5\ARM\INC\NXP\LPC17xx\system_LPC17xx.h)(0x57037F3A)

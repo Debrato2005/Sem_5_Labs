@@ -23,12 +23,12 @@ int main()
 		{
 			LPC_GPIO1->FIOPIN=i<<23;
 			LPC_GPIO0->FIOPIN=SEVENSEG[n%10]<<4;
-		for(j=0;j<100000;j++);
+		for(j=0;j<1000;j++);
 		n=n/10;
 	}
 	if(count>250)
 	{
-		if(LPC_GPIO2->FIOPIN & 1<<12)
+		if (LPC_GPIO2->FIOPIN & 1<<12)
 		{
 			num++;
 			if(num>9999)

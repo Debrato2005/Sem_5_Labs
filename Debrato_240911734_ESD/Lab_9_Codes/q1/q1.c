@@ -12,10 +12,14 @@ unsigned char flag1=0, flag2=0;
 unsigned long int init_command[] = {0x30,0x30,0x30,0x20,0x28,0x0C,0x06,0x01,0x80};
 unsigned int counter=0;   // free running counter (random source)
 unsigned char dice=0;     // random number 0-6
+// Strings to display on LCD
+char msg1[]="DIE TOSS: SW2";
+char msg2[]="Number: ";
+
 // Function declarations
 void port_write(void);
 void lcd_write(void);
-void delay(unsigned int);
+void delay(volatile unsigned int);
 int main()
 {
 SystemInit();
@@ -36,9 +40,7 @@ for (i = 0; i < 9; i++)
 temp1 = init_command[i];
 lcd_write();
 }
-// Strings to display on LCD
-char msg1[]="DIE TOSS: SW2";
-char msg2[]="Number: ";
+
 // Line 1
 flag1=0; // command mode
 temp1=0x80; // cursor to line 1
@@ -67,7 +69,7 @@ i++;
 while(1)
 {
 counter++; // keeps counting until SW2 is pressed
-if((LPC_GPIO2->FIOPIN & (1<<10))==0) // SW2 pressed (active low)
+if((LPC_GPIO2->FIOPIN & (1<<12))==0) // SW2 pressed (active low)
 {
 dice=counter%7; // random number 0-6
 flag1=0; // command mode
@@ -76,7 +78,7 @@ lcd_write();
 flag1=1; // data mode
 temp1=dice+'0'; // convert number to ASCII
 lcd_write(); // display the number
-while((LPC_GPIO2->FIOPIN & (1<<10))==0); // wait until key is released
+while((LPC_GPIO2->FIOPIN & (1<<12))==0); // wait until key is released
 }
 }
 }
@@ -119,9 +121,9 @@ port_write();
 }
 }
 // Software delay function
-void delay(unsigned int r1)
+void delay(volatile unsigned int r1)
 {
-unsigned int r;
+volatile unsigned int r;
 // Empty loop to generate delay
 for(r=0;r<r1;r++);
 return;

@@ -1,4 +1,264 @@
+cd "$HOME/qwen-local"
+
+# Use the working venv you already have
+source "$HOME/Desktop/Debrato_240911734_IS/.venv/bin/activate"
+
+echo "Using Python:"
+which python
+python --version
+
+# We need these only to download/decompress without curl
+python -m pip install --upgrade zstandard requests ollama
+
+# Detect architecture
+case "$(uname -m)" in
+    x86_64)
+        export OLLAMA_ARCH="amd64"
+        ;;
+    aarch64|arm64)
+        export OLLAMA_ARCH="arm64"
+        ;;
+    *)
+        echo "Unsupported architecture: $(uname -m)"
+        return 1 2>/dev/null || exit 1
+        ;;
+esac
+
+echo "Architecture: $OLLAMA_ARCH"
+
+# Download Ollama WITHOUT curl
+python - <<'PY'
+import os
+from pathlib import Path
+import requests
+
+arch = os.environ["OLLAMA_ARCH"]
+
+url = f"https://ollama.com/download/ollama-linux-{arch}.tar.zst"
+out = Path.home() / "qwen-local" / "ollama-linux.tar.zst"
+
+print("Downloading:")
+print(url)
+print("Saving to:")
+print(out)
+
+with requests.get(url, stream=True, timeout=120) as r:
+    r.raise_for_status()
+
+    total = int(r.headers.get("content-length", 0))
+    downloaded = 0
+
+    with open(out, "wb") as f:
+        for chunk in r.iter_content(chunk_size=1024 * 1024):
+            if chunk:
+                f.write(chunk)
+                downloaded += len(chunk)
+
+                if total:
+                    print(
+                        f"\r{downloaded / 1024 / 1024:.1f} MB / "
+                        f"{total / 1024 / 1024:.1f} MB",
+                        end="",
+                        flush=True
+                    )
+
+print("\nDownload complete")
+PY
+
+# Verify that the download really exists
+ls -lh "$HOME/qwen-local/ollama-linux.tar.zst"
+
+# Decompress .zst -> .tar
+python - <<'PY'
+from pathlib import Path
+import zstandard as zstd
+
+base = Path.home() / "qwen-local"
+src = base / "ollama-linux.tar.zst"
+dst = base / "ollama-linux.tar"
+
+print("Decompressing...")
+
+with open(src, "rb") as fin, open(dst, "wb") as fout:
+    zstd.ZstdDecompressor().copy_stream(fin, fout)
+
+print("Decompression complete")
+print(dst)
+PY
+
+# Verify tar file
+ls -lh "$HOME/qwen-local/ollama-linux.tar"
+
+# Install in your own home directory
+mkdir -p "$HOME/.local"
+
+tar -xf "$HOME/qwen-local/ollama-linux.tar" -C "$HOME/.local"
+
+# Make Ollama visible
+export PATH="$HOME/.local/bin:$PATH"
+
+# Permanently add ~/.local/bin to PATH
+grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" || \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+
+echo
+echo "Checking Ollama:"
+which ollama
+ollama --version
+
+# Check available disk/RAM before downloading the model
+echo
+echo "Disk:"
+df -h "$HOME"
+
+echo
+echo "RAM:"
+free -h
+
+# Start Ollama without sudo/systemd
+mkdir -p "$HOME/.ollama"
+
+if ! python - <<'PY'
+import urllib.request
+try:
+    urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=2)
+except Exception:
+    raise SystemExit(1)
+PY
+then
+    nohup ollama serve > "$HOME/.ollama/ollama.log" 2>&1 &
+    echo "Starting Ollama..."
+    sleep 5
+fi
+
+echo
+echo "Ollama server log:"
+cat "$HOME/.ollama/ollama.log" 2>/dev/null || true
+
+echo
+echo "Testing server..."
+ollama list
+
+echo
+echo "Downloading Qwen2.5-Coder 7B..."
+ollama pull qwen2.5-coder:7b
+
+echo
+echo "Installed models:"
+ollama list
+
+echo
+echo "Starting Qwen..."
+ollama run qwen2.5-coder:7b
+
 ````md
+# ============================================================
+# CLEANUP — remove temporary Ollama/Qwen installation
+# No sudo required
+# ============================================================
+
+echo "=== Stopping Ollama ==="
+
+# Stop Ollama processes owned by the current user
+pkill -u "$USER" -f "ollama serve" 2>/dev/null || true
+sleep 1
+
+
+echo "=== Removing Ollama models/data ==="
+
+# Removes all Ollama models, cache and config for this user
+rm -rf "$HOME/.ollama"
+
+
+echo "=== Removing Ollama files from ~/.local ==="
+
+# Path of the archive used during installation
+OLLAMA_TAR="$HOME/qwen-local/ollama-linux.tar"
+
+# Use the tar archive as a manifest so that we remove only files
+# that were installed from the Ollama archive.
+if [ -f "$OLLAMA_TAR" ]; then
+
+    # Remove files and symlinks
+    while IFS= read -r path; do
+        target="$HOME/.local/${path#./}"
+
+        if [ -f "$target" ] || [ -L "$target" ]; then
+            rm -f "$target"
+        fi
+    done < <(tar -tf "$OLLAMA_TAR")
+
+    # Remove empty directories created by Ollama, deepest first
+    tar -tf "$OLLAMA_TAR" \
+        | awk '/\/$/ {print}' \
+        | awk '{ print length, $0 }' \
+        | sort -rn \
+        | cut -d' ' -f2- \
+        | while IFS= read -r path; do
+            target="$HOME/.local/${path#./}"
+            rmdir "$target" 2>/dev/null || true
+        done
+
+else
+    echo "Ollama archive manifest not found."
+    echo "Removing known Ollama binary/data directories instead..."
+
+    rm -f "$HOME/.local/bin/ollama"
+    rm -rf "$HOME/.local/lib/ollama"
+fi
+
+
+echo "=== Removing Ollama PATH entry ==="
+
+# Remove only the PATH line we added
+if [ -f "$HOME/.bashrc" ]; then
+    sed -i '\|^export PATH="\$HOME/.local/bin:\$PATH"$|d' "$HOME/.bashrc"
+fi
+
+
+echo "=== Removing downloaded archives/project ==="
+
+rm -f "$HOME/qwen-local/ollama-linux.tar"
+rm -f "$HOME/qwen-local/ollama-linux.tar.zst"
+
+cd "$HOME"
+rm -rf "$HOME/qwen-local"
+
+
+echo "=== Cleaning current shell PATH ==="
+
+# Removes ~/.local/bin from current shell only when it is an exact PATH entry.
+PATH="$(printf '%s' "$PATH" \
+    | tr ':' '\n' \
+    | grep -vx "$HOME/.local/bin" \
+    | paste -sd ':' -)"
+export PATH
+
+
+echo "=== Verification ==="
+
+if command -v ollama >/dev/null 2>&1; then
+    echo "WARNING: Another Ollama executable still exists at:"
+    command -v ollama
+else
+    echo "Ollama executable removed."
+fi
+
+if [ -d "$HOME/.ollama" ]; then
+    echo "WARNING: ~/.ollama still exists."
+else
+    echo "Ollama models/data removed."
+fi
+
+if [ -d "$HOME/qwen-local" ]; then
+    echo "WARNING: ~/qwen-local still exists."
+else
+    echo "qwen-local directory removed."
+fi
+
+echo
+echo "Cleanup complete."
+
 # Symmetric Cryptography — Individual Python Programs
 
 Install dependencies:

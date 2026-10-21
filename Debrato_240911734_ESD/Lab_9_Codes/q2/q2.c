@@ -13,7 +13,7 @@ unsigned int result;
 // Function declarations
 void port_write(void);
 void lcd_write(void);
-void delay(unsigned int);
+void delay(volatile unsigned int);
 unsigned char scan_key(void);
 
 int main()
@@ -148,9 +148,9 @@ port_write();
 }
 
 // Software delay function
-void delay(unsigned int r1)
+void delay(volatile unsigned int r1)
 {
-unsigned int r;
+volatile unsigned int r;
 // Empty loop to generate delay
 for(r=0;r<r1;r++);
 return;
