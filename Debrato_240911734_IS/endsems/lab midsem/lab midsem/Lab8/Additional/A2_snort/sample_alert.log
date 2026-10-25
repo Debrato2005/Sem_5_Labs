@@ -1,0 +1,9 @@
+10/25-14:02:11.123456  [**] [1:1000001:1] ICMP Ping detected [**] [Classification: Misc activity] [Priority: 3] {ICMP} 192.168.1.50 -> 192.168.1.10
+10/25-14:02:12.223456  [**] [1:1000001:1] ICMP Ping detected [**] [Classification: Misc activity] [Priority: 3] {ICMP} 192.168.1.50 -> 192.168.1.10
+10/25-14:03:01.000001  [**] [1:1000004:1] Possible TCP SYN port scan [**] [Priority: 2] {TCP} 192.168.1.50:51234 -> 192.168.1.10:21
+10/25-14:03:01.000201  [**] [1:1000004:1] Possible TCP SYN port scan [**] [Priority: 2] {TCP} 192.168.1.50:51235 -> 192.168.1.10:22
+10/25-14:03:01.000401  [**] [1:1000004:1] Possible TCP SYN port scan [**] [Priority: 2] {TCP} 192.168.1.50:51236 -> 192.168.1.10:80
+10/25-14:03:05.512000  [**] [1:1000002:1] SSH connection attempt [**] [Priority: 2] {TCP} 10.0.0.7:40022 -> 192.168.1.10:22
+10/25-14:04:44.100000  [**] [1:1000005:1] HTTP SQL injection attempt [**] [Priority: 1] {TCP} 203.0.113.9:55100 -> 192.168.1.10:80
+10/25-14:05:10.900000  [**] [1:1000006:1] HTTP directory traversal [**] [Priority: 1] {TCP} 203.0.113.9:55101 -> 192.168.1.10:80
+10/25-14:06:00.000000  [**] [1:1000007:1] FTP root login attempt [**] [Priority: 2] {TCP} 10.0.0.7:40100 -> 192.168.1.10:21

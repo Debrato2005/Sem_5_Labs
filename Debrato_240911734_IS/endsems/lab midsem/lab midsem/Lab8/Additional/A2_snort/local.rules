@@ -1,0 +1,12 @@
+# Lab 8 - Additional 2: custom Snort rules  (put in /etc/snort/rules/local.rules
+# or pass with -c snort.conf that includes it).  Change $HOME_NET in snort.conf / snort.lua.
+# format: action proto src_ip src_port -> dst_ip dst_port (options)
+
+alert icmp any any -> $HOME_NET any (msg:"ICMP Ping detected"; itype:8; sid:1000001; rev:1;)
+alert tcp any any -> $HOME_NET 22 (msg:"SSH connection attempt"; flags:S; sid:1000002; rev:1;)
+alert tcp any any -> $HOME_NET 23 (msg:"Telnet connection attempt"; flags:S; sid:1000003; rev:1;)
+alert tcp any any -> $HOME_NET any (msg:"Possible TCP SYN port scan"; flags:S; detection_filter:track by_src, count 20, seconds 5; sid:1000004; rev:1;)
+alert tcp any any -> $HOME_NET 80 (msg:"HTTP SQL injection attempt"; content:"union select"; nocase; http_uri; sid:1000005; rev:1;)
+alert tcp any any -> $HOME_NET 80 (msg:"HTTP directory traversal"; content:"../"; http_uri; sid:1000006; rev:1;)
+alert tcp any any -> $HOME_NET 21 (msg:"FTP root login attempt"; content:"USER root"; nocase; sid:1000007; rev:1;)
+alert udp any any -> $HOME_NET 53 (msg:"DNS query to suspicious domain"; content:"malware"; nocase; sid:1000008; rev:1;)

@@ -1,0 +1,6 @@
+pycryptodome
+cryptography
+sympy
+numpy
+matplotlib
+python-gnupg
