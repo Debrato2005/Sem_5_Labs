@@ -1,0 +1,1029 @@
+{
+  "files": [
+    {
+      "path": "archive/old_codebooks/Lab_1_Basic_Symmetric_Key_Ciphers.md",
+      "bytes": 17220,
+      "sha256": "9cf2e0f0ddbaf04c0b7cc6d76b75dd1968fb105024aa6e947ec93427266325b0",
+      "python_blocks": 18,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_codebooks/Lab_2_Advanced_Symmetric_Key_Ciphers.md",
+      "bytes": 26206,
+      "sha256": "2cd448cd04fa74ca148cefa7a4f0b340c18b330cc24fb6fd4f028621f4765a84",
+      "python_blocks": 35,
+      "syntax_errors": [
+        {
+          "block": 1,
+          "line": 22,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 2,
+          "line": 75,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 3,
+          "line": 162,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 4,
+          "line": 190,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 5,
+          "line": 209,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 6,
+          "line": 244,
+          "error": "unexpected character after line continuation character (<unknown>, line 6)"
+        },
+        {
+          "block": 7,
+          "line": 269,
+          "error": "unexpected character after line continuation character (<unknown>, line 6)"
+        },
+        {
+          "block": 8,
+          "line": 291,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 9,
+          "line": 316,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 10,
+          "line": 357,
+          "error": "unexpected character after line continuation character (<unknown>, line 6)"
+        },
+        {
+          "block": 11,
+          "line": 382,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 12,
+          "line": 401,
+          "error": "unexpected character after line continuation character (<unknown>, line 8)"
+        },
+        {
+          "block": 13,
+          "line": 421,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 14,
+          "line": 436,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 15,
+          "line": 472,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 16,
+          "line": 484,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 17,
+          "line": 505,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 18,
+          "line": 538,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 19,
+          "line": 560,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 20,
+          "line": 604,
+          "error": "unexpected character after line continuation character (<unknown>, line 8)"
+        },
+        {
+          "block": 21,
+          "line": 631,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 22,
+          "line": 699,
+          "error": "unexpected character after line continuation character (<unknown>, line 4)"
+        },
+        {
+          "block": 23,
+          "line": 712,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 24,
+          "line": 724,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 25,
+          "line": 740,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 29,
+          "line": 858,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 30,
+          "line": 880,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 31,
+          "line": 886,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 32,
+          "line": 898,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 33,
+          "line": 907,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 34,
+          "line": 919,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 35,
+          "line": 987,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        }
+      ]
+    },
+    {
+      "path": "archive/old_codebooks/Lab_3_Asymmetric_Key_Ciphers.md",
+      "bytes": 21333,
+      "sha256": "970c65c1a9f9f7d2626402c609f2353ad29a9e73df0b0125723161721bc81a98",
+      "python_blocks": 30,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_codebooks/Lab_4_Advanced_Asymmetric_Key_Cryptography (1).md",
+      "bytes": 25155,
+      "sha256": "d9bffc81d622a2465d06954e16dcfbe2cc5b4a49a4187b9551a7e86da704ec5b",
+      "python_blocks": 36,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_codebooks/Lab_5_Hashing.md",
+      "bytes": 20780,
+      "sha256": "12e92b0f9d7d2b4559c46da700185c175dd2f65b8eb05288dfb2d5549a5d83d9",
+      "python_blocks": 43,
+      "syntax_errors": [
+        {
+          "block": 2,
+          "line": 84,
+          "error": "invalid syntax (<unknown>, line 1)"
+        }
+      ]
+    },
+    {
+      "path": "archive/old_codebooks/Lab_6_Digital_Signatures.md",
+      "bytes": 24715,
+      "sha256": "271365fc97120b8cae2ce650f29ddbbacb83438cec04753bbc3d8cf3e9553127",
+      "python_blocks": 35,
+      "syntax_errors": [
+        {
+          "block": 1,
+          "line": 82,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 2,
+          "line": 98,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 3,
+          "line": 129,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 4,
+          "line": 156,
+          "error": "unexpected character after line continuation character (<unknown>, line 8)"
+        },
+        {
+          "block": 5,
+          "line": 176,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 6,
+          "line": 199,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 7,
+          "line": 225,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 8,
+          "line": 259,
+          "error": "invalid syntax (<unknown>, line 8)"
+        },
+        {
+          "block": 10,
+          "line": 322,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 11,
+          "line": 423,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 12,
+          "line": 467,
+          "error": "unexpected character after line continuation character (<unknown>, line 6)"
+        },
+        {
+          "block": 13,
+          "line": 479,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 14,
+          "line": 550,
+          "error": "invalid syntax (<unknown>, line 14)"
+        },
+        {
+          "block": 15,
+          "line": 583,
+          "error": "invalid syntax (<unknown>, line 12)"
+        },
+        {
+          "block": 16,
+          "line": 639,
+          "error": "invalid syntax (<unknown>, line 17)"
+        },
+        {
+          "block": 17,
+          "line": 690,
+          "error": "unexpected character after line continuation character (<unknown>, line 13)"
+        },
+        {
+          "block": 18,
+          "line": 745,
+          "error": "unexpected character after line continuation character (<unknown>, line 21)"
+        },
+        {
+          "block": 19,
+          "line": 794,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 20,
+          "line": 839,
+          "error": "unexpected character after line continuation character (<unknown>, line 3)"
+        },
+        {
+          "block": 21,
+          "line": 877,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 23,
+          "line": 891,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 24,
+          "line": 928,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 25,
+          "line": 956,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 26,
+          "line": 963,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 27,
+          "line": 995,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 28,
+          "line": 1003,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 29,
+          "line": 1015,
+          "error": "unexpected character after line continuation character (<unknown>, line 4)"
+        },
+        {
+          "block": 30,
+          "line": 1151,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 31,
+          "line": 1183,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 35,
+          "line": 1394,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        }
+      ]
+    },
+    {
+      "path": "archive/old_codebooks/Lab_7_Partial_Homomorphic_Encryption_Endsem.md",
+      "bytes": 39782,
+      "sha256": "2d99d52d4e7a9c82408ae2e766bdb09cce86d588b9600743adc85e35a7f24677",
+      "python_blocks": 17,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_codebooks/Lab_8_Searchable_Encryption_Endsem.md",
+      "bytes": 48572,
+      "sha256": "6f70f7580466f55b8d42c8774527bcbef4420776b031d788b601f360b48c1f48",
+      "python_blocks": 25,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_guides/download.md",
+      "bytes": 10808,
+      "sha256": "4dea1f00c8d1dc9f24f997cd242481e219dea4705847a27d298668e4c6d06bed",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_guides/IS_Endsem_Combined_Scenarios_Grant_and_EVoting.md",
+      "bytes": 53959,
+      "sha256": "9dfa2c35033601d6badc91024a3c119bc86f73f6ee469e503a10c5bd787d3871",
+      "python_blocks": 13,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_guides/IS_Endsem_Universal_Modular_README.md",
+      "bytes": 67937,
+      "sha256": "5c5492b1ca49a81e73d7315184877d9e9c776fe23b4d4f19398131b7a37bd2ec",
+      "python_blocks": 21,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_guides/IS_Midsem_4_Questions_Complete_Solutions.md",
+      "bytes": 53127,
+      "sha256": "e7f57cff1818c6d043e0863f248cf8fe1b60420da9eb7dddda2e6a660345d916",
+      "python_blocks": 3,
+      "syntax_errors": [
+        {
+          "block": 1,
+          "line": 1890,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 2,
+          "line": 2225,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 3,
+          "line": 2499,
+          "error": "unexpected character after line continuation character (<unknown>, line 4)"
+        }
+      ]
+    },
+    {
+      "path": "archive/old_guides/QUESTION_TO_CODE.md",
+      "bytes": 3975,
+      "sha256": "5f64f38f90b56f92c655b69a57d4ccd72446b6010bda78175d972278292a8463",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_guides/README_midsem_scenario_guide.md",
+      "bytes": 21420,
+      "sha256": "e5e0c86e12bb3c5a7f07123764fea40d275d3a15d629322e9ae81b72fc1c5c76",
+      "python_blocks": 51,
+      "syntax_errors": [
+        {
+          "block": 1,
+          "line": 99,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 2,
+          "line": 115,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 5,
+          "line": 153,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 10,
+          "line": 197,
+          "error": "unexpected character after line continuation character (<unknown>, line 4)"
+        },
+        {
+          "block": 12,
+          "line": 219,
+          "error": "unexpected character after line continuation character (<unknown>, line 14)"
+        },
+        {
+          "block": 13,
+          "line": 246,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 14,
+          "line": 256,
+          "error": "unexpected character after line continuation character (<unknown>, line 5)"
+        },
+        {
+          "block": 18,
+          "line": 316,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 19,
+          "line": 346,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 20,
+          "line": 354,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 21,
+          "line": 367,
+          "error": "unexpected character after line continuation character (<unknown>, line 4)"
+        },
+        {
+          "block": 22,
+          "line": 378,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 23,
+          "line": 385,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 24,
+          "line": 394,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 25,
+          "line": 421,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 26,
+          "line": 432,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 27,
+          "line": 449,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 28,
+          "line": 456,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 29,
+          "line": 472,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 30,
+          "line": 514,
+          "error": "unexpected character after line continuation character (<unknown>, line 13)"
+        },
+        {
+          "block": 31,
+          "line": 535,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 34,
+          "line": 603,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 35,
+          "line": 615,
+          "error": "illegal target for annotation (<unknown>, line 1)"
+        },
+        {
+          "block": 36,
+          "line": 621,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 38,
+          "line": 824,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 39,
+          "line": 839,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 41,
+          "line": 924,
+          "error": "unexpected indent (<unknown>, line 1)"
+        },
+        {
+          "block": 42,
+          "line": 946,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 43,
+          "line": 960,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 44,
+          "line": 972,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 47,
+          "line": 1002,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 48,
+          "line": 1014,
+          "error": "unexpected character after line continuation character (<unknown>, line 1)"
+        },
+        {
+          "block": 49,
+          "line": 1026,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        },
+        {
+          "block": 51,
+          "line": 1059,
+          "error": "unexpected character after line continuation character (<unknown>, line 2)"
+        }
+      ]
+    },
+    {
+      "path": "archive/old_guides/README_v2_kit_missing_files.md",
+      "bytes": 21989,
+      "sha256": "0ca5f950c7e1056d8940cd31c262de76159a951d811bb616212c8923c478b932",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_programs/EXAM_STARTER.py",
+      "bytes": 8069,
+      "sha256": "b32a641127e10513b26df9a73a68087dfa4f25f9cda080873367a2c8995722bd",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_programs/Secure_EVoting_Menu.py",
+      "bytes": 17348,
+      "sha256": "7305b73c27c072a3f21724dfa5712b11c507894e51d26942eb9d70cf01d141cd",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/old_programs/Secure_Grant_Expense_Portal_Menu.py",
+      "bytes": 8615,
+      "sha256": "60aa1ccb124f78ba864ef7de8309a4fa4f569273b2b419c95f317c2c30f7ac17",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "archive/README.md",
+      "bytes": 1960,
+      "sha256": "1ab0aa068df27e0d64df6eca7f8c60e88e57d1d6cc1a2f8342e0d329a3b8152f",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "audit/AUDIT.md",
+      "bytes": 5592,
+      "sha256": "a4417eebc66fbbb4e424e99b49958ca7d19efee5f3a298ff46ba29f70fb9a090",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "audit/audit_material.py",
+      "bytes": 2575,
+      "sha256": "f2e3c2de45934ac52494bd74d69a52bf878925c045d6522bdf68ab380fb302ba",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "audit/COVERAGE.md",
+      "bytes": 14625,
+      "sha256": "47b8388f441f7f690ecefe2705ca1c2a92e292d3dcb4fb2d62d2e8c7d30e9581",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "audit/PLAN.md",
+      "bytes": 1529,
+      "sha256": "aeb2135aaa5da1f4b152380a44d5044db4221c594bd80b1238af15c64c6f08aa",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "audit/VERIFICATION.md",
+      "bytes": 4155,
+      "sha256": "40a8b1617c5f098921a843c3cb5b012099ffc779d256bf34f221efdb2a25ed68",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "bundle.py",
+      "bytes": 5848,
+      "sha256": "27837d26de437053932e7a8637a95e7a80d4b31b139a842e9d17f20bf813e527",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "CHANGES.md",
+      "bytes": 4514,
+      "sha256": "891106407dc5ec2ad02bff808cb5b7ea28780fcbfc69d2eaa419edf8f23cf09f",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/00_Scenario_Assembly.md",
+      "bytes": 12886,
+      "sha256": "964f2bbcb01f049825d84cb2b1a6722849d7ba9bf86958817e97e8e0adcbd8f8",
+      "python_blocks": 2,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab1_Classical_Ciphers.md",
+      "bytes": 12746,
+      "sha256": "1fd2f28bc144094e73079b15429948904b420b60f90413756149442624306b52",
+      "python_blocks": 8,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab2_Symmetric_DES_AES.md",
+      "bytes": 14403,
+      "sha256": "8178d8cda1ba5040884f75d533875eccfbb5eefd2fd7a29f3854f4374610c3d0",
+      "python_blocks": 11,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab3_Asymmetric_RSA_ElGamal_ECC.md",
+      "bytes": 14645,
+      "sha256": "abcc68bbad314d76a532067aae0f756eb7b37b86686c79310eca337f8188746f",
+      "python_blocks": 7,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab4_Advanced_Asymmetric_KMS_Access.md",
+      "bytes": 13484,
+      "sha256": "72748fa33a80e564c13106c1a901e5f0ad935759c23596766095f959548a7181",
+      "python_blocks": 6,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab5_Hashing.md",
+      "bytes": 10866,
+      "sha256": "9710c54e4aa9af1140b8e31e761e08645cca258edd1bade0a4833254ec03bb03",
+      "python_blocks": 8,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab6_Digital_Signatures.md",
+      "bytes": 15159,
+      "sha256": "204acc72818f7305912eb93a1927284c6a7f6bb483c39f1c173835d654e8431d",
+      "python_blocks": 10,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab7_Homomorphic_Encryption.md",
+      "bytes": 13370,
+      "sha256": "ca2dbd6f9b84c29d1d327f1ca926380a228663c7ed170b5e3bc86394a297f661",
+      "python_blocks": 10,
+      "syntax_errors": []
+    },
+    {
+      "path": "codebooks/Lab8_Searchable_Encryption.md",
+      "bytes": 14949,
+      "sha256": "772b717d65f6f4e81da447d8c076db5211bb2b8c5a60f2eed7bff0e3dbc6b1bf",
+      "python_blocks": 5,
+      "syntax_errors": []
+    },
+    {
+      "path": "PLUGPLAY.md",
+      "bytes": 7249,
+      "sha256": "ab74ce36b524dcaa7383b627e571b231c2a66128313cc925e5abdbfc059cf7d2",
+      "python_blocks": 1,
+      "syntax_errors": []
+    },
+    {
+      "path": "README.md",
+      "bytes": 8155,
+      "sha256": "8c2c850d311bb51819b6d281054019562a47c9ae9fec730915bf06ad41d0fd22",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "solutions/evoting.py",
+      "bytes": 26039,
+      "sha256": "1c6165ececdeeffe4c5bebbd364baa0f6e9658e934ed013ddd83e498c3ef388c",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "solutions/grant_portal.py",
+      "bytes": 14536,
+      "sha256": "cae2f82eb6501c63d9f125116747b7d249a837f37324b9b888d48a478c053e04",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/net_client.py",
+      "bytes": 4873,
+      "sha256": "870e6d6af7d4d58fe85fd1a42eb12585219f9f0eba321976a37a62bcd1e7b5fc",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/net_server.py",
+      "bytes": 8074,
+      "sha256": "618996071226bba147450ff0885f543aac64844bf74d56c12639b6005fb056ee",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/config.py",
+      "bytes": 1039,
+      "sha256": "913298ddefc87a017bbae43a0e48d7287d1109617793af5068b99990170fb002",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/menu_app.py",
+      "bytes": 1014,
+      "sha256": "1096e4d7632f946266b54a6bf63ecc94510aac183748945f2bb1e37053afedc1",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/protocol.py",
+      "bytes": 3777,
+      "sha256": "f78d897e010db2022b9fd33a456dd08cb0d0794ae31b62a51aad9262eee2023f",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/socket_client.py",
+      "bytes": 1455,
+      "sha256": "856558cc7c48afaf2042c6615e0947ac41082e411009368464417063d7b190d5",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/socket_server.py",
+      "bytes": 1233,
+      "sha256": "e828bcb93da0c5845f1c8f57ea1a7f79b2479fa88d6d706416107fdd1b51326c",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/plugplay/ui.py",
+      "bytes": 1666,
+      "sha256": "836dab5c256710f244db80da38aac9689d3b83e30803b3262d753962cfb7ed8a",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "templates/secure_records_menu.py",
+      "bytes": 16470,
+      "sha256": "a73e38801c3ed50d08a3b38d1fb51fdbbd26bfe5f8c5acf3a9f20d9b02d0ab9c",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/__init__.py",
+      "bytes": 86,
+      "sha256": "4303eaa456d987467e51cae1cbe5888d41c7d0740f0cc8aab5072efd492d6c07",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/helpers.py",
+      "bytes": 1107,
+      "sha256": "7e40b8cd765b92fb215f4361474e7269e12d2f1949246d0a581045318df73c87",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_codebooks.py",
+      "bytes": 3920,
+      "sha256": "4b59a48b811bd395bd62409309ffa0f66b1a50f9dd0e05018ea34d080575cf15",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_plugplay.py",
+      "bytes": 7083,
+      "sha256": "1546867092e747675353a959f6c52beb6d7f8adb66db4528611a5ff2cca23860",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_plugplay_crypto.py",
+      "bytes": 7350,
+      "sha256": "3505c00a7e88be6f9d1ee4b4933f4d3a29f1b0944c95b2e7c4758a9ee65562d2",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_programs.py",
+      "bytes": 12407,
+      "sha256": "47ce76d7274e5511158563ec6e6e333abbfe2971a86a38cc311fd0487c05a749",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_regressions_crypto.py",
+      "bytes": 11691,
+      "sha256": "704d95949e21e4e403b4275155cd4e199df2a62b5d6098541f51a8bdf8a573b4",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_regressions_glue.py",
+      "bytes": 3341,
+      "sha256": "2927cbc5e8db9ff7cb015f1872474188ed1b1d5597d9437857fed0764abec45d",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_regressions_network.py",
+      "bytes": 9406,
+      "sha256": "4d1424fbdd1df45cfacd7e3c6af89d5802d0a9e4c74330bc5128aadf945a63b6",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_regressions_scenarios.py",
+      "bytes": 9001,
+      "sha256": "e994f1a17c621afb38f02e7ceb15718d86227b4feb7956673f7472eea89a8dd5",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "tests/test_toolkit.py",
+      "bytes": 26408,
+      "sha256": "175614d79c21bbd1dd8586fff6e88f0b2b26590e9836b3867615e42b8a60e9af",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/__init__.py",
+      "bytes": 1071,
+      "sha256": "935fbda417b7f05cffbef4d3b6f3bc03a874f27bbc2fbb9319eccf35889b39e8",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/access.py",
+      "bytes": 8379,
+      "sha256": "054033da3a0150e6d7d7aed757ebe9c988202dc56a09223dbcebc2eb0a464cf8",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/asymmetric.py",
+      "bytes": 13910,
+      "sha256": "83e6381504077579d85073ec6df1e313a4b791951e31f12f79c90c5b6e42d834",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/classical.py",
+      "bytes": 10288,
+      "sha256": "345655f7a27c071f7f0b8cc622c590b0cd5c4d77689a1edf62ad943ab1182371",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/hashing.py",
+      "bytes": 3055,
+      "sha256": "025b8d708bfdc31900a38082a3f013181f95e8a2c95703362124fec249127741",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/homomorphic.py",
+      "bytes": 11996,
+      "sha256": "62449576e920d88f7ed73e9c314903012d6f1d31f8bfc8887df76b82f640ff07",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/net.py",
+      "bytes": 6926,
+      "sha256": "7f59156e8d30b2288893ba2b0fe8c127fc588e5cf39b2db49927249fa519be51",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/records.py",
+      "bytes": 13840,
+      "sha256": "8df8ea8a5880066db5fc2460d34fadede5d01298fa2a92b89074fa46d895d2f8",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/searchable.py",
+      "bytes": 7289,
+      "sha256": "b2f3f66b114d8b5b4a5017beeed44d34cffb564daa4dddf71682d0a5c28edaaf",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/signatures.py",
+      "bytes": 9169,
+      "sha256": "435c10c4d2cb053c8f5a9efd9e75942243a3d2f58b3871113edec89efa57be8d",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/symmetric.py",
+      "bytes": 11307,
+      "sha256": "fc88d26237adf96fae704971fa6f9fc0da3dddcbb4b8817918a68f3fbc34b5c8",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "toolkit/util.py",
+      "bytes": 12239,
+      "sha256": "7b04d170e348b2138d850cb23de1ebfb2dcb7a4bbdb2b4e791cee38839ba7848",
+      "python_blocks": 0,
+      "syntax_errors": []
+    },
+    {
+      "path": "../IS/IS Lab Evaluation Pattern for IT.docx",
+      "bytes": 17371,
+      "sha256": "f62b7c752f299d97d94620b9deee03437f36c672a59ad2f73a3068e783514696"
+    },
+    {
+      "path": "../IS/IS Lab Manual [1-4].pdf",
+      "bytes": 765515,
+      "sha256": "cdcf9c08c8907610e537c8a54bc89b8f115e1cdf7fb84d0945f45a5cd9344c9b"
+    },
+    {
+      "path": "../IS/IS Lab Manual [5-6].pdf",
+      "bytes": 471697,
+      "sha256": "baa2c522f21962adfe6952cde73c6cfffb4bbb10b7ccc477a8190cf83ee08d36"
+    },
+    {
+      "path": "../IS/IS Lab Manual [7-8].pdf",
+      "bytes": 123924,
+      "sha256": "5e8922ea7a0f1042faaa38ebc4b16eed45c534912530742b8b34ed67998aeae3"
+    }
+  ],
+  "archive_python_blocks": 327,
+  "archive_syntax_failures": 100,
+  "active_syntax_error_files": []
+}

@@ -1,4 +1,29 @@
-"""Educational exam demo: AES-192 + Paillier + MD5 + RSA; NOT production authentication."""
+"""SECURE GRANT EXPENSE PORTAL
+
+Scenario:
+
+A research institute manages grant expenses through an online portal. Researchers submit grant details, reviewers check their integrity and authenticity, and the finance officer computes the total grant expenditure. The system must keep grant data confidential and verifiable, and the total must be computed without decrypting individual amounts.
+
+Requirements:
+
+Researcher side: The researcher enters a Grant ID, Grant Description and Grant Amount. Before storing, the system:
+
+Encrypts the grant description with AES-192.
+Encrypts the grant amount with the Paillier cryptosystem.
+Computes an MD5 hash of the grant record.
+Signs the hash with an RSA digital signature.
+The researcher can submit grant details, and view all submitted records, including those entered earlier.
+
+Reviewer side: The reviewer verifies the RSA signature and recomputes the MD5 hash to detect tampering. The reviewer can search the stored records by index (Grant ID) without exposing the encrypted contents. The reviewer can also view the AES-192 decrypted grant description as a hexadecimal dump.
+
+Finance Officer side: The finance officer homomorphically aggregates the Paillier-encrypted amounts of the selected grants. The officer then verifies the signatures and decrypts only the final aggregate, never individual amounts.
+
+Task:
+
+Write a menu-driven Python program implementing the above roles and functions. Use role-based menus and cryptographic operations for confidentiality, integrity and authenticity. Store the encrypted, hashed and signed records persistently (file or database), so that earlier entries remain visible after a restart. Handle invalid input and tampered records gracefully. Display outputs for all functions.
+
+Note: If the Python code is not menu-driven, the total marks obtained will be reduced to half."""
+
 import json
 import os
 import hashlib

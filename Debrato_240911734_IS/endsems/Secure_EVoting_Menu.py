@@ -1,4 +1,28 @@
-"""Educational e-voting composition; not safe for real elections or formal threshold HE."""
+"""A national e-voting system has been deployed to allow citizens to cast their votes securely from remote locations. The system ensures privacy, verifiability, integrity, and non-repudiation while allowing aggregate computations without revealing individual votes.
+1. On the Client Side
+A voter fills out an electronic ballot that records their candidate selection and constituency ID.
+Before submission, the voter's device generates a SHA-512 hash of the ballot file to ensure data integrity.
+The ballot is then encrypted using AES-256 in CBC mode for confidentiality.
+The AES key is encrypted with the Election Commission's RSA-4096 public key.
+To ensure authenticity and non-repudiation, the voter's system digitally signs the SHA-512 hash using their ElGamal digital signature.
+The voter's choice (numerical candidate ID) is homomorphically encrypted using the Paillier encryption scheme, allowing the Election Commission to tally votes without decrypting individual ballots.
+A timestamp from a trusted authority is added to record the exact submission time and ensure votes are cast before the deadline.
+
+2. On the Server Side
+The system decrypts the AES session key using its RSA private key but keeps the homomorphically encrypted vote values in their encrypted form.
+It verifies the digital signature using the voter's public key and compares the SHA-512 hash to detect any tampering.
+The timestamp is checked to confirm that the vote was cast within the valid voting period.
+The homomorphic tallying algorithm is applied to aggregate the encrypted votes and compute total counts without decrypting any individual vote.
+For audit and search purposes, the server maintains a searchable encryption index to locate ballots from specific constituencies or time ranges without revealing vote content.
+At the end of the election, only the final aggregated ciphertext is decrypted using a threshold decryption scheme, ensuring that no single authority can view votes independently.
+
+3. Programming Task
+Write a menu-driven Python program that implements the above functionalities.
+
+Ensure that the system supports role-based access control and the appropriate use of cryptographic techniques for confidentiality, integrity, and authenticity.
+Use any data structures (e.g., databases, files or arrays) to securely store encrypted, signed and hashed data.
+Show outputs for all the functions specified in the question."""
+
 import hashlib
 import hmac
 import json

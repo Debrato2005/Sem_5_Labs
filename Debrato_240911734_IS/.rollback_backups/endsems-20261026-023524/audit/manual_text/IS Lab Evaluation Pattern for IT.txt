@@ -1,0 +1,13 @@
+IS Lab Evaluation Pattern for IT
+Program Check: 7 marks
+Record Submission 1 [Lab 1 to Lab 4]: 7 marks
+Record Submission 2 [Lab 
+5
+ to Lab 8]: 7 marks
+Midterm Exam: 20 marks
+Project Progress Evaluation: 10 marks
+Quiz: 9 marks
+End-Semester Exam: 20 marks
+Final Project Viva: 20 marks
+IS Lab Record Writing Instructions
+For the IS Lab, you are required to maintain a normal 200-page ruled notebook as your lab record book. For each lab, you should write the lab question, the major(main) code used, and the corresponding output (either drawn neatly or pasted, if needed). Please keep your record neat, well-organized, and updated lab-wise. There will be two record checks during the semester: Record 1 will include Labs 1 to 4, and Record 2 will include Labs 5 to 8. Make sure your record is complete before submission. If you have any questions, feel free to reach out.
